@@ -295,7 +295,7 @@ end
 )::Tuple{Vec3, Float64}
     d1 = C - A   # diagonal 1
     d2 = D - B   # diagonal 2
-    cr = cross(d1, d2)
+    cr = cross(d2, d1)
     normal = norm(cr)
     n = cr / normal
     area = 0.5 * normal
@@ -633,7 +633,7 @@ function _calc_forces(
         for j in range
             rj = rings[j]
             span_vec = rj.corners[2] - rj.corners[1]
-            chord_vec = rj.corners[3] - rj.corners[2]
+            chord_vec = rj.corners[4] - rj.corners[1]
 
             row_len = (1 + mirror_xz) * n_span
 
@@ -644,8 +644,8 @@ function _calc_forces(
             V_total = V_free + Vec3(Vx[j], Vy[j], Vz[j])
             vector = delta_gamma_c * span_vec + delta_gamma_s * chord_vec
 
-            if (j - start) % row_len == 0
-                vector += gamma[j] * (rj.corners[4] - rj.corners[1])
+            if (j - start + 1) % row_len == 0
+                vector += -gamma[j] * (rj.corners[3] - rj.corners[2])
             end
 
             i_span, i_chord = _j1dto2d(j, start, n_span, Val(mirror_xz))
@@ -660,7 +660,7 @@ function _calc_delta_gamma(
     gamma::Vector{Float64}, j::Int, start::Int, row_len::Int
 )
     delta_gamma_s =
-        (((j - start + 1) % row_len == 0) ? 0.0 : gamma[j + 1]) - gamma[j]
+        gamma[j] - (((j - start) % row_len == 0) ? 0.0 : gamma[j - 1])
     delta_gamma_c =
         gamma[j] - ((j - start) < row_len ? 0.0 : gamma[j - row_len])
     return delta_gamma_c, delta_gamma_s
