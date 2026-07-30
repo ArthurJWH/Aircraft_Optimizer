@@ -18,4 +18,6 @@ mutable struct Coeffs
     CN_surf::Float64
 end
 
-# Coeffs() =
+function Coeffs()
+    return Coeffs(ntuple(_ -> 0.0, 16)...)
+end

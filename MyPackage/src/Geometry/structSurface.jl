@@ -49,7 +49,7 @@ function Surface(;
     MGC = IntegrateGLQ(chord)(0.0, 1.0)
     S = MGC * b
     AR = b^2 / S
-    MAC = 2 * IntegrateGLQ(x -> chord(x)^2)(0.0, 1.0) / MGC # Assume wing is symmetric about the centerline
+    MAC = IntegrateGLQ(x -> chord(x)^2)(0.0, 1.0) / MGC # Assume wing is symmetric about the centerline
     return Surface{chordF, twistF, sweepF, dihedralF}(
         name,
         mirror_xz,

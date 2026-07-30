@@ -12,7 +12,7 @@ function VLMMesh(plane::Plane, n_chordxspan::Vector{NTuple{2, Int}})
     ncs = length(n_chordxspan)
     meshes = Vector{VLMMesh}(undef, n)
     for i in 1:n
-        n_chord, n_span = n_chordxspan[i % ncs]
+        n_chord, n_span = n_chordxspan[(i - 1) % ncs + 1]
         meshes[i] = VLMMesh(surfaces[i], n_chord, n_span)
     end
     return meshes
@@ -43,7 +43,7 @@ end
             y = geom.y[j]
             chord_j = geom.chords[j]
             vertices[1, j, i] = xi * chord_j
-            vertices[2, j, i] = y * geom.b
+            vertices[2, j, i] = y * geom.b / 2
             vertices[3, j, i] = spl_zi(y) * chord_j
         end
     end
@@ -82,7 +82,7 @@ end
             y = geom.y[j]
             chord_j = geom.chords[j]
             vertices[1, j, i] = xi * chord_j
-            vertices[3, j, i] = y * geom.b
+            vertices[3, j, i] = y * geom.b / 2
             vertices[2, j, i] = spl_zi(y) * chord_j
         end
     end
@@ -144,8 +144,8 @@ end
     twists = Array{Float64}(undef, length(y))
     @inbounds for j in eachindex(y)
         yj = y[j]
-        sweep_lengths[j] = b * sweep_integral(0.0, yj)
-        dihedral_lengths[j] = b * dihedral_integral(0.0, yj)
+        sweep_lengths[j] = b * sweep_integral(0.0, yj) / 2
+        dihedral_lengths[j] = b * dihedral_integral(0.0, yj) / 2
         twists[j] = twist(yj)
     end
 
