@@ -501,8 +501,8 @@ end
 @inline function _segment_induced_v(
     P::Vec3, A::Vec3, B::Vec3, Gamma::Float64, epsilon2::Float64
 )::Vec3
-    r1 = A - P
-    r2 = B - P
+    r1 = P - A
+    r2 = P - B
     r0 = B - A
     r0_2 = dot(r0, r0)
 
@@ -512,13 +512,13 @@ end
     end
 
     # epsilon2 is a dimensionless core-radius fraction of the
-    # local segment length^2 ([core_len2] = m^2), so the regularization
+    # local segment length^2 ([core2] = m^2), so the regularization
     # scales with panel size instead of being a fixed, geometry-independent
     # absolute number.
     core2 = epsilon2 * r0_2
 
     cr = cross(r1, r2)
-    cr2 = dot(cr, cr) + core2 * core2
+    cr2 = dot(cr, cr) + core2 * r0_2
 
     norm1 = sqrt(dot(r1, r1) + core2)
     norm2 = sqrt(dot(r2, r2) + core2)
@@ -540,17 +540,17 @@ end
         return Vec3(0.0, 0.0, 0.0)
     end
 
-    r1 = A - P
+    r1 = P - A
     r1_2 = dot(r1, r1)
     core2 = epsilon2 * ref_len2
 
-    cr = cross(r1, dir)
-    cr2 = dot(cr, cr) + core2 * core2
+    cr = cross(dir, r1)
+    cr2 = dot(cr, cr) + core2
 
     norm1 = sqrt(r1_2 + core2)
-    cos_th = dot(r1, dir) / norm1
+    cos_th = dot(dir, r1) / norm1
 
-    factor = Gamma / (4 * pi * cr2) * (cos_th - 1.0)
+    factor = Gamma / (4 * pi * cr2) * (1 + cos_th)
     return factor * cr
 end
 
