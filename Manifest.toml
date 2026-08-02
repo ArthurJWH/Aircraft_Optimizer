@@ -1028,7 +1028,7 @@ version = "0.2.4"
 
 [[deps.MyPackage]]
 deps = ["GLMakie", "LinearAlgebra", "Plots", "SparseArrays", "StaticArrays"]
-path = "c:\\sae_airframe\\MyPackage"
+path = "c:\\aircraft_optimizer\\MyPackage"
 uuid = "88d113d2-8e34-47cc-b805-b87edb4fabf9"
 version = "0.1.0"
 
