@@ -1,8 +1,8 @@
+using Plots
+
 using ..Geometry: Airfoil
 
 function plot_airfoil(airfoil::Airfoil; save=false)
-    using Plots
-
     x = range(0.0, 1.0; length=100)
     y_top = airfoil.top_surface.(x)
     y_bottom = airfoil.bottom_surface.(x)
