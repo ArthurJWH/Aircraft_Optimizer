@@ -1,4 +1,4 @@
-using GLMakie
+using Makie
 
 using ..VLM: VLMMesh
 
@@ -31,15 +31,14 @@ function plot_mesh(meshes::AbstractVector{<:VLMMesh}; min_extent=5.0)
     end
 
     _apply_bounds!(ax, xlims, ylims, zlims)
-    GLMakie.display(fig)
 
     return fig
 end
 
 function _initialize_ax()
-    fig = GLMakie.Figure(; size=(1000, 800))
+    fig = Makie.Figure(; size=(1000, 800))
 
-    ax = GLMakie.Axis3(
+    ax = Makie.Axis3(
         fig[1, 1];
         xlabel="X",
         ylabel="Y",
@@ -57,14 +56,14 @@ function _plot!(ax, mesh::VLMMesh)
     y = mesh.vertices[2, :, :]
     z = mesh.vertices[3, :, :]
 
-    GLMakie.surface!(ax, x, y, z; shading=true, colormap=:viridis)
+    Makie.surface!(ax, x, y, z; shading=true, colormap=:viridis)
 
     if mesh.mirror_xz
-        GLMakie.surface!(ax, x, -y, z; shading=true, colormap=:viridis)
-        GLMakie.wireframe!(ax, x, -y, z; color=(:black, 0.4), linewidth=1)
+        Makie.surface!(ax, x, -y, z; shading=true, colormap=:viridis)
+        Makie.wireframe!(ax, x, -y, z; color=(:black, 0.4), linewidth=1)
     end
 
-    GLMakie.wireframe!(ax, x, y, z; color=(:black, 0.4), linewidth=1)
+    Makie.wireframe!(ax, x, y, z; color=(:black, 0.4), linewidth=1)
 
     return nothing
 end
@@ -104,7 +103,7 @@ function _merge_bounds(bounds1, bounds2)
 end
 
 function _apply_bounds!(ax, xlims, ylims, zlims)
-    GLMakie.xlims!(ax, xlims)
-    GLMakie.ylims!(ax, ylims)
-    return GLMakie.zlims!(ax, zlims)
+    Makie.xlims!(ax, xlims)
+    Makie.ylims!(ax, ylims)
+    return Makie.zlims!(ax, zlims)
 end

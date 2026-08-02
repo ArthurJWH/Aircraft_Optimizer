@@ -33,7 +33,18 @@ jobs:
           using Pkg
           Pkg.instantiate()
 
+      - name: Install X11 libraries
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y xvfb libgl1-mesa-dri libgl1-mesa-glx
+
+      # - name: Build and deploy documentation
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      #   run: julia --project=docs docs/make.jl
+
       - name: Build and deploy documentation
+        run: |
+          xvfb-run -s "-screen 0 1024x768x24" julia --project=docs docs/make.jl
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: julia --project=docs docs/make.jl
