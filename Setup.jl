@@ -1,6 +1,6 @@
 dir = abspath(@__DIR__)
 
-pkgs = ["Plots", "GLMakie"]
+pkgs = ["Plots", "Makie"]
 
 reset = true
 

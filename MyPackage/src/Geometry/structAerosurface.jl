@@ -1,6 +1,6 @@
 using ..Utils
 
-mutable struct Surface{chordF, twistF, sweepF, dihedralF}
+mutable struct Aerosurface{chordF, twistF, sweepF, dihedralF}
     # y is the spanwise fraction coordinate
     # x is the chordwise fraction coordinate
 
@@ -30,8 +30,8 @@ mutable struct Surface{chordF, twistF, sweepF, dihedralF}
     dihedral::dihedralF
 end
 
-function Surface(;
-    name::String                          = "Surface",
+function Aerosurface(;
+    name::String                          = "Aerosurface",
     mirror_xz::Bool                       = true,
     vertical::Bool                        = false,
     pos::Tuple{Float64, Float64, Float64} = (0.0, 0.0, 0.0),
@@ -50,7 +50,7 @@ function Surface(;
     S = MGC * b
     AR = b^2 / S
     MAC = IntegrateGLQ(x -> chord(x)^2)(0.0, 1.0) / MGC # Assume wing is symmetric about the centerline
-    return Surface{chordF, twistF, sweepF, dihedralF}(
+    return Aerosurface{chordF, twistF, sweepF, dihedralF}(
         name,
         mirror_xz,
         vertical,

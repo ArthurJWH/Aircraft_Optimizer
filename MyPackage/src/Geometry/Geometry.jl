@@ -1,11 +1,11 @@
 module Geometry
 
 include("structAirfoil.jl")
-include("structSurface.jl")
+include("structAerosurface.jl")
 include("structPlane.jl")
 
 export Airfoil, calc_surfaces, calc_camber
-export Surface
+export Aerosurface
 export Plane
 
 end

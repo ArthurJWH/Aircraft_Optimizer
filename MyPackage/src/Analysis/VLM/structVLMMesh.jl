@@ -22,7 +22,7 @@ function VLMMesh(plane::Plane, n_chord::Int, n_span::Int)
     return [VLMMesh(surface, n_chord, n_span) for surface in plane.surfaces]
 end
 
-function VLMMesh(surface::Surface, n_chord::Int, n_span::Int)
+function VLMMesh(surface::Aerosurface, n_chord::Int, n_span::Int)
     vertices = _generate_vertices(
         surface, n_chord, n_span, Val(surface.vertical)
     )
@@ -30,7 +30,7 @@ function VLMMesh(surface::Surface, n_chord::Int, n_span::Int)
 end
 
 @inline function _generate_vertices(
-    surface::Surface, n_chord::Int, n_span::Int, ::Val{false}
+    surface::Aerosurface, n_chord::Int, n_span::Int, ::Val{false}
 )
     geom = _generate_geom(surface, n_chord, n_span)
 
@@ -69,7 +69,7 @@ end
 end
 
 @inline function _generate_vertices(
-    surface::Surface, n_chord::Int, n_span::Int, ::Val{true}
+    surface::Aerosurface, n_chord::Int, n_span::Int, ::Val{true}
 )
     geom = _generate_geom(surface, n_chord, n_span)
 
@@ -107,7 +107,7 @@ end
     return vertices
 end
 
-@inline function _generate_geom(surface::Surface, n_chord::Int, n_span::Int)
+@inline function _generate_geom(surface::Aerosurface, n_chord::Int, n_span::Int)
     b = surface.b
     ys = surface.ys
     cambers = getfield.(surface.airfoils, :camber)

@@ -5,7 +5,7 @@ using ..VLM
 struct vlm end
 
 function Plane(
-    surfaces::Vector{<:Surface}; CG::NTuple{3, Float64}=(0.0, 0.0, 0.0)
+    surfaces::Vector{<:Aerosurface}; CG::NTuple{3, Float64}=(0.0, 0.0, 0.0)
 )
     coeffs = Coeffs()
 
@@ -21,7 +21,7 @@ function Plane(
 end
 
 function Plane(
-    surfaces::Vector{<:Surface},
+    surfaces::Vector{<:Aerosurface},
     ::Type{vlm};
     CG::NTuple{3, Float64}=(0.0, 0.0, 0.0),
 )
