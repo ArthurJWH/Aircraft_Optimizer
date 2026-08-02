@@ -1,4 +1,3 @@
-<!-- Ctrl + Shift + V to read -->
 ```@raw html
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/ArthurJWH/Aircraft_Optimizer/main/assets/img/ao-logo-dark-mode.png">

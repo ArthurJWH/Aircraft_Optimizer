@@ -1,5 +1,3 @@
-using GLMakie
-
 using ..VLM: VLMMesh
 
 """
@@ -17,6 +15,8 @@ function plot_mesh(mesh::VLMMesh; min_extent=5.0)
 end
 
 function plot_mesh(meshes::AbstractVector{<:VLMMesh}; min_extent=5.0)
+    using GLMakie
+
     fig, ax = _initialize_ax()
 
     xlims = (Inf, -Inf)
