@@ -1,6 +1,39 @@
 using ..Utils
 using ..Geometry
 
+"""
+    VLMMesh
+
+    A struct that represents the VLM mesh of a Plane.
+    It includes the vertices of the mesh and a flag indicating whether the mesh is mirrored in the xz-plane.
+
+    Fields
+    ------
+    vertices : Array{Float64, 3}
+        A 3D array containing the coordinates of the mesh vertices.
+        The dimensions are (3, n_span + 1, n_chord + 1), where n_span and n_chord are the number of spanwise and chordwise panels, respectively.
+    mirror_xz : Bool
+        A boolean flag indicating whether the mesh is mirrored in the xz-plane.
+
+    Arguments
+    ---------
+    plane : Plane
+        The Plane object for which the VLM mesh is to be generated.
+    n_chordxspan : Vector{NTuple{2, Int}}
+        A vector of tuples specifying the number of chordwise and spanwise panels for each surface of the plane.
+
+    Returns
+    -------
+    meshes : Vector{VLMMesh}
+        A vector of VLMMesh objects, one for each surface of the plane.
+
+    Example
+    -------
+    ```julia
+    plane = Plane(surfaces)
+    vlm_meshes = VLMMesh(plane, [(10, 5), (15, 7)])
+    ```
+"""
 struct VLMMesh
     vertices::Array{Float64, 3}
     mirror_xz::Bool

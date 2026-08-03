@@ -1,3 +1,28 @@
+"""
+    LSR
+
+    Create a least-squares regression function from given x-coordinates and function values.
+
+    Fields
+    ------
+    xs : Vector{Float64}
+        The x-coordinates of the data points.
+    fs : Vector{Float64}
+        The function values at the data points.
+    order : Int
+        The order of the polynomial.
+    coeffs : Vector{Float64}
+        The calculated coefficients of the polynomial.
+
+    Example
+    -------
+    ```julia
+    xs = [0.0, 1.0, 2.0]
+    fs = [1.0, 2.0, 0.0]
+    lsr = LSR(xs, fs, 2)
+    f = lsr(1.5)  # Evaluate the polynomial at x=1.5
+    ```
+"""
 mutable struct LSR
     xs::Vector{<:AbstractFloat}
     fs::Vector{<:AbstractFloat}

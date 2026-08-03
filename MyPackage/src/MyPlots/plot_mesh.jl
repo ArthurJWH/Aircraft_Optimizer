@@ -5,12 +5,27 @@ using ..VLM: VLMMesh
 """
     plot_mesh(mesh::VLMMesh; min_extent = 5.0)
 
-Interactive 3D visualization of a VLM mesh.
+    Interactive 3D visualization of a VLM mesh.
 
-Arguments
+    Arguments
+    ---------
+    mesh : VLMMesh
+        The VLM mesh to plot
+    min_extent : Float64, optional
+        Minimum axis span in each direction (default is 5.0)
 
-  - `mesh`: the VLM mesh to plot
-  - `min_extent`: minimum axis span in each direction
+    Returns
+    -------
+    fig : Figure
+        The Makie figure containing the 3D plot of the mesh.
+
+    Example
+    -------
+    ```julia
+    mesh = VLMMesh(...)  # Create a VLMMesh instance
+    fig = plot_mesh(mesh; min_extent=5.0)
+    display(fig)
+    ```
 """
 function plot_mesh(mesh::VLMMesh; min_extent=5.0)
     return plot_mesh([mesh]; min_extent=min_extent)

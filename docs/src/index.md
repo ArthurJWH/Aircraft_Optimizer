@@ -6,7 +6,9 @@
 </picture>
 ```
 
-> Low speed aircraft optimization tool
+> Vortex Lattice Method based aircraft optimization workflow
+
+# Aircraft Optimizer
 
 ```@contents
 ```

@@ -42,6 +42,31 @@ function GroundTransform(rot::NTuple{2, Float64}, h::Float64, CG::Vec3)
     )
 end
 
+"""
+    VLMSetup
+
+    A struct that stores the Vortex Lattice Method parameters.
+    The parameters can be reused to avoid recomputation of geometric AIC matrix.
+
+    Fields
+    ------
+    initialized : Bool
+        A boolean indicating whether the VLM setup has been initialized.
+    AIC_rings : Matrix{Float64}
+        The aerodynamic influence coefficient (AIC) matrix from only the vortex rings.
+    n_panels : Int
+        The total number of panels in the VLM mesh.
+    surfaces : Vector{VLMSurface}
+        A vector of VLMSurface objects representing the surfaces of the aircraft.
+    wake_map : Vector{Int}
+        A vector mapping the wake panels to their corresponding indices in the AIC matrix.
+    panel_rings : Vector{VortexRing}
+        A vector of VortexRing objects representing the panels in the VLM mesh.
+    ground : Bool
+        A boolean indicating whether ground effect is considered in the VLM setup.
+    h : Float64
+        The height of the aircraft CG above the ground for ground effect calculations.
+"""
 struct VLMSetup
     initialized::Bool
     AIC_rings::Matrix{Float64}
@@ -73,6 +98,28 @@ end
 #     end
 # end
 
+"""
+    VLMSolver
+
+    A function that computes the forces and moments acting on an aircraft using the Vortex Lattice Method (VLM) for a given flow condition.
+
+    Inputs
+    ------
+    plane : Plane
+        The Plane object representing the aircraft geometry.
+    V_inf : Float64
+        The freestream velocity magnitude.
+    rot : NTuple{2, Float64}
+        A tuple containing the angle of attack (alpha) and sideslip angle (beta) in degrees.
+    ground : Bool, optional
+        A boolean indicating whether to include ground effect in the calculations. Default is false.
+    h : Float64, optional
+        The height of the aircraft CG above the ground for ground effect calculations. Default is 0.0.
+    rho : Float64, optional
+        The air density. Default is 1.225 kg/m^3 (sea level standard).
+    epsilon2 : Float64, optional
+        A regularization parameter to avoid singularities in the induced velocity calculations. Default is 1e-10.
+"""
 function VLMSolver(
     plane::Plane,
     V_inf::Float64,

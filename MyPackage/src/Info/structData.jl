@@ -1,3 +1,23 @@
+"""
+    Data
+
+    A mutable struct to hold general aerodynamic and geometric data of a plane.
+
+    Fields
+    ------
+    CG : Tuple{Float64, Float64, Float64}
+        The center of gravity of the plane.
+    SM : Float64
+        The static margin of the plane.
+    MTOW : Float64
+        The maximum takeoff weight of the plane.
+    alpha_stall : Float64
+        The angle of attack at which the plane stalls.
+    beta_stall : Float64
+        The sideslip angle at which the plane stalls.
+    alpha_trim : Float64
+        The angle of attack at which the plane is trimmed.
+"""
 mutable struct Data
     CG::Tuple{Float64, Float64, Float64}
     SM::Float64

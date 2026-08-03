@@ -3,7 +3,7 @@ using MyPackage
 
 makedocs(
     sitename = "Aircraft Optimizer",
-    # modules = [MyPackage],
+    modules = [MyPackage],
 
     format = Documenter.HTML(
         inventory_version = string(pkgversion(MyPackage)),
@@ -16,7 +16,8 @@ makedocs(
         "Understanding the Repository" => "onboarding/repo_structure.md",
         "Technical" => [
             "Sign Conventions" => "technical/sign_conventions.md"
-        ]
+        ],
+        "Code Reference" => "code_reference/code_reference.md",
     ],
 )
 
