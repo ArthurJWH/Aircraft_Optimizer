@@ -1,0 +1,59 @@
+*,
+*::before,
+*::after {
+	box-sizing: border-box;
+	margin: 0;
+	padding: 0;
+}
+
+html {
+	scroll-behavior: smooth;
+	scrollbar-gutter: stable;
+	-webkit-font-smoothing: antialiased;
+	text-rendering: optimizeLegibility;
+}
+
+p {
+	text-wrap: pretty;
+}
+
+a {
+	color: inherit;
+	text-decoration: none;
+}
+
+ul {
+	list-style: none;
+}
+
+li {
+	text-wrap: pretty;
+}
+
+img {
+	display: block;
+	max-width: 100%;
+}
+
+button {
+	cursor: pointer;
+	border: none;
+	background: none;
+	font: inherit;
+}
+
+details {
+	overflow: clip;
+}
+
+details::details-content {
+	block-size: 0;
+	transition:
+		block-size 0.5s var(--ease),
+		content-visibility 0.5s var(--ease);
+	transition-behavior: allow-discrete;
+}
+
+details[open]::details-content {
+	block-size: auto;
+}
