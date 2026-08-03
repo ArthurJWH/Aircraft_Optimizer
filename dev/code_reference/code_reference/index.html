@@ -19,7 +19,31 @@ Example
 -------
 ```julia
 points = read_dat(&quot;path/to/airfoil.dat&quot;; header_lines=1)
-```</code></pre></div><a class="docs-sourcelink" target="_blank" href="https://github.com/ArthurJWH/Aircraft_Optimizer/blob/f771818fe43c975b4187c33e019c4c74b1fd3c2f/MyPackage/src/IO/read_dat.jl#L1-L23">source</a></section></details></article><h2 id="Utils"><a class="docs-heading-anchor" href="#Utils">Utils</a><a id="Utils-1"></a><a class="docs-heading-anchor-permalink" href="#Utils" title="Permalink"></a></h2><article><details class="docstring" open="true"><summary id="MyPackage.Utils.legendre"><a class="docstring-binding" href="#MyPackage.Utils.legendre"><code>MyPackage.Utils.legendre</code></a> — <span class="docstring-category">Constant</span></summary><section><div><pre><code class="language-julia hljs">IntegrateGLQ
+```</code></pre></div><a class="docs-sourcelink" target="_blank" href="https://github.com/ArthurJWH/Aircraft_Optimizer/blob/744d703dd079a27bbe8b2192839389bbff9820cc/MyPackage/src/IO/read_dat.jl#L1-L23">source</a></section></details></article><h2 id="Utils"><a class="docs-heading-anchor" href="#Utils">Utils</a><a id="Utils-1"></a><a class="docs-heading-anchor-permalink" href="#Utils" title="Permalink"></a></h2><article><details class="docstring" open="true"><summary id="MyPackage.Utils.legendre"><a class="docstring-binding" href="#MyPackage.Utils.legendre"><code>MyPackage.Utils.legendre</code></a> — <span class="docstring-category">Constant</span></summary><section><div><pre><code class="language-julia hljs">legendre
+
+A constant that stores the roots and weights for Gauss-Legendre quadrature for n=1 to 5.
+Each entry is a tuple containing two arrays:
+- The first array contains the roots of the Legendre polynomial of degree n.
+- The second array contains the corresponding weights for the quadrature.</code></pre></div><a class="docs-sourcelink" target="_blank" href="https://github.com/ArthurJWH/Aircraft_Optimizer/blob/744d703dd079a27bbe8b2192839389bbff9820cc/MyPackage/src/Utils/structIntegrate.jl#L23-L30">source</a></section></details></article><article><details class="docstring" open="true"><summary id="MyPackage.Utils.AbstractBC"><a class="docstring-binding" href="#MyPackage.Utils.AbstractBC"><code>MyPackage.Utils.AbstractBC</code></a> — <span class="docstring-category">Type</span></summary><section><div><pre><code class="language-julia hljs">AbstractBC
+
+Abstract type for boundary conditions applied in Spline.
+Used in function declarations to support different BC types.</code></pre></div><a class="docs-sourcelink" target="_blank" href="https://github.com/ArthurJWH/Aircraft_Optimizer/blob/744d703dd079a27bbe8b2192839389bbff9820cc/MyPackage/src/Utils/structBC.jl#L1-L6">source</a></section></details></article><article><details class="docstring" open="true"><summary id="MyPackage.Utils.FirstDerivativeBC"><a class="docstring-binding" href="#MyPackage.Utils.FirstDerivativeBC"><code>MyPackage.Utils.FirstDerivativeBC</code></a> — <span class="docstring-category">Type</span></summary><section><div><pre><code class="language-julia hljs">FirstDerivativeBC
+
+Struct for boundary condition for the first derivative of a function.
+Defines the value of the first derivative at a given index.
+
+Fields
+------
+value : Float64
+    The value of the first derivative at the given index.
+index : T
+    The index at which the boundary condition is applied.
+
+Example
+-------
+```julia
+bc = FirstDerivativeBC(0.0, 1)  # First derivative is zero at index 1
+```</code></pre></div><a class="docs-sourcelink" target="_blank" href="https://github.com/ArthurJWH/Aircraft_Optimizer/blob/744d703dd079a27bbe8b2192839389bbff9820cc/MyPackage/src/Utils/structBC.jl#L22-L40">source</a></section></details></article><article><details class="docstring" open="true"><summary id="MyPackage.Utils.IntegrateGLQ"><a class="docstring-binding" href="#MyPackage.Utils.IntegrateGLQ"><code>MyPackage.Utils.IntegrateGLQ</code></a> — <span class="docstring-category">Type</span></summary><section><div><pre><code class="language-julia hljs">IntegrateGLQ
 
 A struct for performing numerical integration using Gauss-Legendre quadrature.
 
@@ -36,26 +60,7 @@ Example
 f(x) = x^2
 integrator = IntegrateGLQ(f, 3)
 result = integrator(0.0, 1.0)  # Integrates f(x) from 0 to 1
-```</code></pre></div><a class="docs-sourcelink" target="_blank" href="https://github.com/ArthurJWH/Aircraft_Optimizer/blob/f771818fe43c975b4187c33e019c4c74b1fd3c2f/MyPackage/src/Utils/structIntegrate.jl#L23-L42">source</a></section></details></article><article><details class="docstring" open="true"><summary id="MyPackage.Utils.AbstractBC"><a class="docstring-binding" href="#MyPackage.Utils.AbstractBC"><code>MyPackage.Utils.AbstractBC</code></a> — <span class="docstring-category">Type</span></summary><section><div><pre><code class="language-julia hljs">AbstractBC
-
-Abstract type for boundary conditions applied in Spline.
-Used in function declarations to support different BC types.</code></pre></div><a class="docs-sourcelink" target="_blank" href="https://github.com/ArthurJWH/Aircraft_Optimizer/blob/f771818fe43c975b4187c33e019c4c74b1fd3c2f/MyPackage/src/Utils/structBC.jl#L1-L6">source</a></section></details></article><article><details class="docstring" open="true"><summary id="MyPackage.Utils.FirstDerivativeBC"><a class="docstring-binding" href="#MyPackage.Utils.FirstDerivativeBC"><code>MyPackage.Utils.FirstDerivativeBC</code></a> — <span class="docstring-category">Type</span></summary><section><div><pre><code class="language-julia hljs">FirstDerivativeBC
-
-Struct for boundary condition for the first derivative of a function.
-Defines the value of the first derivative at a given index.
-
-Fields
-------
-value : Float64
-    The value of the first derivative at the given index.
-index : T
-    The index at which the boundary condition is applied.
-
-Example
--------
-```julia
-bc = FirstDerivativeBC(0.0, 1)  # First derivative is zero at index 1
-```</code></pre></div><a class="docs-sourcelink" target="_blank" href="https://github.com/ArthurJWH/Aircraft_Optimizer/blob/f771818fe43c975b4187c33e019c4c74b1fd3c2f/MyPackage/src/Utils/structBC.jl#L22-L40">source</a></section></details></article><article><details class="docstring" open="true"><summary id="MyPackage.Utils.LSR"><a class="docstring-binding" href="#MyPackage.Utils.LSR"><code>MyPackage.Utils.LSR</code></a> — <span class="docstring-category">Type</span></summary><section><div><pre><code class="language-julia hljs">LSR
+```</code></pre></div><a class="docs-sourcelink" target="_blank" href="https://github.com/ArthurJWH/Aircraft_Optimizer/blob/744d703dd079a27bbe8b2192839389bbff9820cc/MyPackage/src/Utils/structIntegrate.jl#L71-L90">source</a></section></details></article><article><details class="docstring" open="true"><summary id="MyPackage.Utils.LSR"><a class="docstring-binding" href="#MyPackage.Utils.LSR"><code>MyPackage.Utils.LSR</code></a> — <span class="docstring-category">Type</span></summary><section><div><pre><code class="language-julia hljs">LSR
 
 Create a least-squares regression function from given x-coordinates and function values.
 
@@ -77,7 +82,7 @@ xs = [0.0, 1.0, 2.0]
 fs = [1.0, 2.0, 0.0]
 lsr = LSR(xs, fs, 2)
 f = lsr(1.5)  # Evaluate the polynomial at x=1.5
-```</code></pre></div><a class="docs-sourcelink" target="_blank" href="https://github.com/ArthurJWH/Aircraft_Optimizer/blob/f771818fe43c975b4187c33e019c4c74b1fd3c2f/MyPackage/src/Utils/structLSR.jl#L1-L25">source</a></section></details></article><article><details class="docstring" open="true"><summary id="MyPackage.Utils.NopBC"><a class="docstring-binding" href="#MyPackage.Utils.NopBC"><code>MyPackage.Utils.NopBC</code></a> — <span class="docstring-category">Type</span></summary><section><div><pre><code class="language-julia hljs">NopBC
+```</code></pre></div><a class="docs-sourcelink" target="_blank" href="https://github.com/ArthurJWH/Aircraft_Optimizer/blob/744d703dd079a27bbe8b2192839389bbff9820cc/MyPackage/src/Utils/structLSR.jl#L1-L25">source</a></section></details></article><article><details class="docstring" open="true"><summary id="MyPackage.Utils.NopBC"><a class="docstring-binding" href="#MyPackage.Utils.NopBC"><code>MyPackage.Utils.NopBC</code></a> — <span class="docstring-category">Type</span></summary><section><div><pre><code class="language-julia hljs">NopBC
 
 Struct for no boundary condition applied. Used as a filler.
 
@@ -85,7 +90,7 @@ Example
 -------
 ```julia
 bc = NopBC()  # No boundary condition
-```</code></pre></div><a class="docs-sourcelink" target="_blank" href="https://github.com/ArthurJWH/Aircraft_Optimizer/blob/f771818fe43c975b4187c33e019c4c74b1fd3c2f/MyPackage/src/Utils/structBC.jl#L9-L19">source</a></section></details></article><article><details class="docstring" open="true"><summary id="MyPackage.Utils.SecondDerivativeBC"><a class="docstring-binding" href="#MyPackage.Utils.SecondDerivativeBC"><code>MyPackage.Utils.SecondDerivativeBC</code></a> — <span class="docstring-category">Type</span></summary><section><div><pre><code class="language-julia hljs">SecondDerivativeBC
+```</code></pre></div><a class="docs-sourcelink" target="_blank" href="https://github.com/ArthurJWH/Aircraft_Optimizer/blob/744d703dd079a27bbe8b2192839389bbff9820cc/MyPackage/src/Utils/structBC.jl#L9-L19">source</a></section></details></article><article><details class="docstring" open="true"><summary id="MyPackage.Utils.SecondDerivativeBC"><a class="docstring-binding" href="#MyPackage.Utils.SecondDerivativeBC"><code>MyPackage.Utils.SecondDerivativeBC</code></a> — <span class="docstring-category">Type</span></summary><section><div><pre><code class="language-julia hljs">SecondDerivativeBC
 
 Boundary condition for the second derivative of a function.
 Defines the value of the second derivative at a given index.
@@ -99,7 +104,7 @@ Example
 -------
 ```julia
 bc = SecondDerivativeBC(0.0, 1)  # Second derivative is zero at index 1
-```</code></pre></div><a class="docs-sourcelink" target="_blank" href="https://github.com/ArthurJWH/Aircraft_Optimizer/blob/f771818fe43c975b4187c33e019c4c74b1fd3c2f/MyPackage/src/Utils/structBC.jl#L46-L62">source</a></section></details></article><article><details class="docstring" open="true"><summary id="MyPackage.Utils.ThirdDerivativeBC"><a class="docstring-binding" href="#MyPackage.Utils.ThirdDerivativeBC"><code>MyPackage.Utils.ThirdDerivativeBC</code></a> — <span class="docstring-category">Type</span></summary><section><div><pre><code class="language-julia hljs">ThirdDerivativeBC
+```</code></pre></div><a class="docs-sourcelink" target="_blank" href="https://github.com/ArthurJWH/Aircraft_Optimizer/blob/744d703dd079a27bbe8b2192839389bbff9820cc/MyPackage/src/Utils/structBC.jl#L46-L62">source</a></section></details></article><article><details class="docstring" open="true"><summary id="MyPackage.Utils.ThirdDerivativeBC"><a class="docstring-binding" href="#MyPackage.Utils.ThirdDerivativeBC"><code>MyPackage.Utils.ThirdDerivativeBC</code></a> — <span class="docstring-category">Type</span></summary><section><div><pre><code class="language-julia hljs">ThirdDerivativeBC
 
 Boundary condition for the third derivative of a function.
 Defines the value of the third derivative at a given index.
@@ -113,7 +118,7 @@ Example
 -------
 ```julia
 bc = ThirdDerivativeBC(0.0, 1)  # Third derivative is zero at index 1
-```</code></pre></div><a class="docs-sourcelink" target="_blank" href="https://github.com/ArthurJWH/Aircraft_Optimizer/blob/f771818fe43c975b4187c33e019c4c74b1fd3c2f/MyPackage/src/Utils/structBC.jl#L68-L84">source</a></section></details></article><h2 id="PlaneInfo"><a class="docs-heading-anchor" href="#PlaneInfo">PlaneInfo</a><a id="PlaneInfo-1"></a><a class="docs-heading-anchor-permalink" href="#PlaneInfo" title="Permalink"></a></h2><article><details class="docstring" open="true"><summary id="MyPackage.PlaneInfo.Coeffs"><a class="docstring-binding" href="#MyPackage.PlaneInfo.Coeffs"><code>MyPackage.PlaneInfo.Coeffs</code></a> — <span class="docstring-category">Type</span></summary><section><div><pre><code class="language-julia hljs">Coeffs
+```</code></pre></div><a class="docs-sourcelink" target="_blank" href="https://github.com/ArthurJWH/Aircraft_Optimizer/blob/744d703dd079a27bbe8b2192839389bbff9820cc/MyPackage/src/Utils/structBC.jl#L68-L84">source</a></section></details></article><h2 id="PlaneInfo"><a class="docs-heading-anchor" href="#PlaneInfo">PlaneInfo</a><a id="PlaneInfo-1"></a><a class="docs-heading-anchor-permalink" href="#PlaneInfo" title="Permalink"></a></h2><article><details class="docstring" open="true"><summary id="MyPackage.PlaneInfo.Coeffs"><a class="docstring-binding" href="#MyPackage.PlaneInfo.Coeffs"><code>MyPackage.PlaneInfo.Coeffs</code></a> — <span class="docstring-category">Type</span></summary><section><div><pre><code class="language-julia hljs">Coeffs
 
 A mutable struct to store aerodynamic coefficients for a plane.
 
@@ -150,7 +155,7 @@ CM_surf : Vector{Float64}
 CMl_surf : Vector{Float64}
     Roll moment coefficient per surface.
 CN_surf::Vector{Float64}
-    Yaw moment coefficient per surface.</code></pre></div><a class="docs-sourcelink" target="_blank" href="https://github.com/ArthurJWH/Aircraft_Optimizer/blob/f771818fe43c975b4187c33e019c4c74b1fd3c2f/MyPackage/src/Info/structCoeffs.jl#L1-L40">source</a></section></details></article><article><details class="docstring" open="true"><summary id="MyPackage.PlaneInfo.Data"><a class="docstring-binding" href="#MyPackage.PlaneInfo.Data"><code>MyPackage.PlaneInfo.Data</code></a> — <span class="docstring-category">Type</span></summary><section><div><pre><code class="language-julia hljs">Data
+    Yaw moment coefficient per surface.</code></pre></div><a class="docs-sourcelink" target="_blank" href="https://github.com/ArthurJWH/Aircraft_Optimizer/blob/744d703dd079a27bbe8b2192839389bbff9820cc/MyPackage/src/Info/structCoeffs.jl#L1-L40">source</a></section></details></article><article><details class="docstring" open="true"><summary id="MyPackage.PlaneInfo.Data"><a class="docstring-binding" href="#MyPackage.PlaneInfo.Data"><code>MyPackage.PlaneInfo.Data</code></a> — <span class="docstring-category">Type</span></summary><section><div><pre><code class="language-julia hljs">Data
 
 A mutable struct to hold general aerodynamic and geometric data of a plane.
 
@@ -167,7 +172,7 @@ alpha_stall : Float64
 beta_stall : Float64
     The sideslip angle at which the plane stalls.
 alpha_trim : Float64
-    The angle of attack at which the plane is trimmed.</code></pre></div><a class="docs-sourcelink" target="_blank" href="https://github.com/ArthurJWH/Aircraft_Optimizer/blob/f771818fe43c975b4187c33e019c4c74b1fd3c2f/MyPackage/src/Info/structData.jl#L1-L20">source</a></section></details></article><h2 id="Geometry"><a class="docs-heading-anchor" href="#Geometry">Geometry</a><a id="Geometry-1"></a><a class="docs-heading-anchor-permalink" href="#Geometry" title="Permalink"></a></h2><article><details class="docstring" open="true"><summary id="MyPackage.Geometry.Aerosurface"><a class="docstring-binding" href="#MyPackage.Geometry.Aerosurface"><code>MyPackage.Geometry.Aerosurface</code></a> — <span class="docstring-category">Type</span></summary><section><div><pre><code class="language-julia hljs">Aerosurface
+    The angle of attack at which the plane is trimmed.</code></pre></div><a class="docs-sourcelink" target="_blank" href="https://github.com/ArthurJWH/Aircraft_Optimizer/blob/744d703dd079a27bbe8b2192839389bbff9820cc/MyPackage/src/Info/structData.jl#L1-L20">source</a></section></details></article><h2 id="Geometry"><a class="docs-heading-anchor" href="#Geometry">Geometry</a><a id="Geometry-1"></a><a class="docs-heading-anchor-permalink" href="#Geometry" title="Permalink"></a></h2><article><details class="docstring" open="true"><summary id="MyPackage.Geometry.Aerosurface"><a class="docstring-binding" href="#MyPackage.Geometry.Aerosurface"><code>MyPackage.Geometry.Aerosurface</code></a> — <span class="docstring-category">Type</span></summary><section><div><pre><code class="language-julia hljs">Aerosurface
 
 A mutable struct that represents an aerodynamic surface, such as wing, horizontal stabilizer, or vertical stabilizer.
 
@@ -201,7 +206,7 @@ sweep : Function, optional
 sw_center : Float64, optional
     The chordwise fraction of each section where the sweep is applied. Default is 0.25.
 dihedral : Function, optional
-    A function that defines the dihedral distribution in terms of span fractions of the aerosurface. Default is a constant function returning 0.0.</code></pre></div><a class="docs-sourcelink" target="_blank" href="https://github.com/ArthurJWH/Aircraft_Optimizer/blob/f771818fe43c975b4187c33e019c4c74b1fd3c2f/MyPackage/src/Geometry/structAerosurface.jl#L3-L39">source</a></section></details></article><article><details class="docstring" open="true"><summary id="MyPackage.Geometry.Airfoil"><a class="docstring-binding" href="#MyPackage.Geometry.Airfoil"><code>MyPackage.Geometry.Airfoil</code></a> — <span class="docstring-category">Type</span></summary><section><div><pre><code class="language-julia hljs">Airfoil
+    A function that defines the dihedral distribution in terms of span fractions of the aerosurface. Default is a constant function returning 0.0.</code></pre></div><a class="docs-sourcelink" target="_blank" href="https://github.com/ArthurJWH/Aircraft_Optimizer/blob/744d703dd079a27bbe8b2192839389bbff9820cc/MyPackage/src/Geometry/structAerosurface.jl#L3-L39">source</a></section></details></article><article><details class="docstring" open="true"><summary id="MyPackage.Geometry.Airfoil"><a class="docstring-binding" href="#MyPackage.Geometry.Airfoil"><code>MyPackage.Geometry.Airfoil</code></a> — <span class="docstring-category">Type</span></summary><section><div><pre><code class="language-julia hljs">Airfoil
 
 A struct that represents an airfoil.
 It includes the name, .dat file path, top and bottom surfaces, and camber line.
@@ -217,7 +222,7 @@ top_surface : T
 bottom_surface : B
     A function representing the bottom surface of the airfoil.
 camber : C
-    A function representing the camber line of the airfoil.</code></pre></div><a class="docs-sourcelink" target="_blank" href="https://github.com/ArthurJWH/Aircraft_Optimizer/blob/f771818fe43c975b4187c33e019c4c74b1fd3c2f/MyPackage/src/Geometry/structAirfoil.jl#L4-L22">source</a></section></details></article><article><details class="docstring" open="true"><summary id="MyPackage.Geometry.Plane"><a class="docstring-binding" href="#MyPackage.Geometry.Plane"><code>MyPackage.Geometry.Plane</code></a> — <span class="docstring-category">Type</span></summary><section><div><pre><code class="language-julia hljs">Plane
+    A function representing the camber line of the airfoil.</code></pre></div><a class="docs-sourcelink" target="_blank" href="https://github.com/ArthurJWH/Aircraft_Optimizer/blob/744d703dd079a27bbe8b2192839389bbff9820cc/MyPackage/src/Geometry/structAirfoil.jl#L4-L22">source</a></section></details></article><article><details class="docstring" open="true"><summary id="MyPackage.Geometry.Plane"><a class="docstring-binding" href="#MyPackage.Geometry.Plane"><code>MyPackage.Geometry.Plane</code></a> — <span class="docstring-category">Type</span></summary><section><div><pre><code class="language-julia hljs">Plane
 
 A struct that represents an aircraft plane.
 It includes a list of surfaces, aerodynamic coefficients, and additional data.
@@ -229,7 +234,7 @@ surfaces : Vector{&lt;:Aerosurface}
 coeffs : Coeffs
     The aerodynamic coefficients of the plane.
 data : Data
-    Additional data about the plane.</code></pre></div><a class="docs-sourcelink" target="_blank" href="https://github.com/ArthurJWH/Aircraft_Optimizer/blob/f771818fe43c975b4187c33e019c4c74b1fd3c2f/MyPackage/src/Geometry/structPlane.jl#L3-L17">source</a></section></details></article><h2 id="VLM"><a class="docs-heading-anchor" href="#VLM">VLM</a><a id="VLM-1"></a><a class="docs-heading-anchor-permalink" href="#VLM" title="Permalink"></a></h2><article><details class="docstring" open="true"><summary id="MyPackage.VLM.VLMMesh"><a class="docstring-binding" href="#MyPackage.VLM.VLMMesh"><code>MyPackage.VLM.VLMMesh</code></a> — <span class="docstring-category">Type</span></summary><section><div><pre><code class="language-julia hljs">VLMMesh
+    Additional data about the plane.</code></pre></div><a class="docs-sourcelink" target="_blank" href="https://github.com/ArthurJWH/Aircraft_Optimizer/blob/744d703dd079a27bbe8b2192839389bbff9820cc/MyPackage/src/Geometry/structPlane.jl#L3-L17">source</a></section></details></article><h2 id="VLM"><a class="docs-heading-anchor" href="#VLM">VLM</a><a id="VLM-1"></a><a class="docs-heading-anchor-permalink" href="#VLM" title="Permalink"></a></h2><article><details class="docstring" open="true"><summary id="MyPackage.VLM.VLMMesh"><a class="docstring-binding" href="#MyPackage.VLM.VLMMesh"><code>MyPackage.VLM.VLMMesh</code></a> — <span class="docstring-category">Type</span></summary><section><div><pre><code class="language-julia hljs">VLMMesh
 
 A struct that represents the VLM mesh of a Plane.
 It includes the vertices of the mesh and a flag indicating whether the mesh is mirrored in the xz-plane.
@@ -259,7 +264,7 @@ Example
 ```julia
 plane = Plane(surfaces)
 vlm_meshes = VLMMesh(plane, [(10, 5), (15, 7)])
-```</code></pre></div><a class="docs-sourcelink" target="_blank" href="https://github.com/ArthurJWH/Aircraft_Optimizer/blob/f771818fe43c975b4187c33e019c4c74b1fd3c2f/MyPackage/src/Analysis/VLM/structVLMMesh.jl#L4-L36">source</a></section></details></article><article><details class="docstring" open="true"><summary id="MyPackage.VLM.VLMSetup"><a class="docstring-binding" href="#MyPackage.VLM.VLMSetup"><code>MyPackage.VLM.VLMSetup</code></a> — <span class="docstring-category">Type</span></summary><section><div><pre><code class="language-julia hljs">VLMSetup
+```</code></pre></div><a class="docs-sourcelink" target="_blank" href="https://github.com/ArthurJWH/Aircraft_Optimizer/blob/744d703dd079a27bbe8b2192839389bbff9820cc/MyPackage/src/Analysis/VLM/structVLMMesh.jl#L4-L36">source</a></section></details></article><article><details class="docstring" open="true"><summary id="MyPackage.VLM.VLMSetup"><a class="docstring-binding" href="#MyPackage.VLM.VLMSetup"><code>MyPackage.VLM.VLMSetup</code></a> — <span class="docstring-category">Type</span></summary><section><div><pre><code class="language-julia hljs">VLMSetup
 
 A struct that stores the Vortex Lattice Method parameters.
 The parameters can be reused to avoid recomputation of geometric AIC matrix.
@@ -281,7 +286,7 @@ panel_rings : Vector{VortexRing}
 ground : Bool
     A boolean indicating whether ground effect is considered in the VLM setup.
 h : Float64
-    The height of the aircraft CG above the ground for ground effect calculations.</code></pre></div><a class="docs-sourcelink" target="_blank" href="https://github.com/ArthurJWH/Aircraft_Optimizer/blob/f771818fe43c975b4187c33e019c4c74b1fd3c2f/MyPackage/src/Analysis/VLM/vlm_solver.jl#L45-L69">source</a></section></details></article><article><details class="docstring" open="true"><summary id="MyPackage.VLM.VLMSolver-Tuple{MyPackage.Geometry.Plane, Float64, Tuple{Float64, Float64}}"><a class="docstring-binding" href="#MyPackage.VLM.VLMSolver-Tuple{MyPackage.Geometry.Plane, Float64, Tuple{Float64, Float64}}"><code>MyPackage.VLM.VLMSolver</code></a> — <span class="docstring-category">Method</span></summary><section><div><pre><code class="language-julia hljs">VLMSolver
+    The height of the aircraft CG above the ground for ground effect calculations.</code></pre></div><a class="docs-sourcelink" target="_blank" href="https://github.com/ArthurJWH/Aircraft_Optimizer/blob/744d703dd079a27bbe8b2192839389bbff9820cc/MyPackage/src/Analysis/VLM/vlm_solver.jl#L45-L69">source</a></section></details></article><article><details class="docstring" open="true"><summary id="MyPackage.VLM.VLMSolver-Tuple{MyPackage.Geometry.Plane, Float64, Tuple{Float64, Float64}}"><a class="docstring-binding" href="#MyPackage.VLM.VLMSolver-Tuple{MyPackage.Geometry.Plane, Float64, Tuple{Float64, Float64}}"><code>MyPackage.VLM.VLMSolver</code></a> — <span class="docstring-category">Method</span></summary><section><div><pre><code class="language-julia hljs">VLMSolver
 
 A function that computes the forces and moments acting on an aircraft using the Vortex Lattice Method (VLM) for a given flow condition.
 
@@ -300,7 +305,7 @@ h : Float64, optional
 rho : Float64, optional
     The air density. Default is 1.225 kg/m^3 (sea level standard).
 epsilon2 : Float64, optional
-    A regularization parameter to avoid singularities in the induced velocity calculations. Default is 1e-10.</code></pre></div><a class="docs-sourcelink" target="_blank" href="https://github.com/ArthurJWH/Aircraft_Optimizer/blob/f771818fe43c975b4187c33e019c4c74b1fd3c2f/MyPackage/src/Analysis/VLM/vlm_solver.jl#L101-L122">source</a></section></details></article><h2 id="MyPlots"><a class="docs-heading-anchor" href="#MyPlots">MyPlots</a><a id="MyPlots-1"></a><a class="docs-heading-anchor-permalink" href="#MyPlots" title="Permalink"></a></h2><article><details class="docstring" open="true"><summary id="MyPackage.MyPlots.plot_airfoil-Tuple{MyPackage.Geometry.Airfoil}"><a class="docstring-binding" href="#MyPackage.MyPlots.plot_airfoil-Tuple{MyPackage.Geometry.Airfoil}"><code>MyPackage.MyPlots.plot_airfoil</code></a> — <span class="docstring-category">Method</span></summary><section><div><pre><code class="language-julia hljs">plot_airfoil(airfoil::Airfoil; save=false)
+    A regularization parameter to avoid singularities in the induced velocity calculations. Default is 1e-10.</code></pre></div><a class="docs-sourcelink" target="_blank" href="https://github.com/ArthurJWH/Aircraft_Optimizer/blob/744d703dd079a27bbe8b2192839389bbff9820cc/MyPackage/src/Analysis/VLM/vlm_solver.jl#L101-L122">source</a></section></details></article><h2 id="MyPlots"><a class="docs-heading-anchor" href="#MyPlots">MyPlots</a><a id="MyPlots-1"></a><a class="docs-heading-anchor-permalink" href="#MyPlots" title="Permalink"></a></h2><article><details class="docstring" open="true"><summary id="MyPackage.MyPlots.plot_airfoil-Tuple{MyPackage.Geometry.Airfoil}"><a class="docstring-binding" href="#MyPackage.MyPlots.plot_airfoil-Tuple{MyPackage.Geometry.Airfoil}"><code>MyPackage.MyPlots.plot_airfoil</code></a> — <span class="docstring-category">Method</span></summary><section><div><pre><code class="language-julia hljs">plot_airfoil(airfoil::Airfoil; save=false)
 
 Plots the top and bottom surfaces of the given `Airfoil` along with its camber line.
 
@@ -321,7 +326,7 @@ Example
 ```julia
 airfoil = Airfoil(&quot;NACA2412&quot;, &quot;path/to/NACA2412.dat&quot;)
 p = plot_airfoil(airfoil; save=true)
-```</code></pre></div><a class="docs-sourcelink" target="_blank" href="https://github.com/ArthurJWH/Aircraft_Optimizer/blob/f771818fe43c975b4187c33e019c4c74b1fd3c2f/MyPackage/src/MyPlots/plot_airfoil.jl#L5-L28">source</a></section></details></article><article><details class="docstring" open="true"><summary id="MyPackage.MyPlots.plot_mesh-Tuple{MyPackage.VLM.VLMMesh}"><a class="docstring-binding" href="#MyPackage.MyPlots.plot_mesh-Tuple{MyPackage.VLM.VLMMesh}"><code>MyPackage.MyPlots.plot_mesh</code></a> — <span class="docstring-category">Method</span></summary><section><div><pre><code class="language-julia hljs">plot_mesh(mesh::VLMMesh; min_extent = 5.0)
+```</code></pre></div><a class="docs-sourcelink" target="_blank" href="https://github.com/ArthurJWH/Aircraft_Optimizer/blob/744d703dd079a27bbe8b2192839389bbff9820cc/MyPackage/src/MyPlots/plot_airfoil.jl#L5-L28">source</a></section></details></article><article><details class="docstring" open="true"><summary id="MyPackage.MyPlots.plot_mesh-Tuple{MyPackage.VLM.VLMMesh}"><a class="docstring-binding" href="#MyPackage.MyPlots.plot_mesh-Tuple{MyPackage.VLM.VLMMesh}"><code>MyPackage.MyPlots.plot_mesh</code></a> — <span class="docstring-category">Method</span></summary><section><div><pre><code class="language-julia hljs">plot_mesh(mesh::VLMMesh; min_extent = 5.0)
 
 Interactive 3D visualization of a VLM mesh.
 
@@ -343,4 +348,4 @@ Example
 mesh = VLMMesh(...)  # Create a VLMMesh instance
 fig = plot_mesh(mesh; min_extent=5.0)
 display(fig)
-```</code></pre></div><a class="docs-sourcelink" target="_blank" href="https://github.com/ArthurJWH/Aircraft_Optimizer/blob/f771818fe43c975b4187c33e019c4c74b1fd3c2f/MyPackage/src/MyPlots/plot_mesh.jl#L5-L29">source</a></section></details></article></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../../technical/sign_conventions/">« Sign Conventions</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="auto">Automatic (OS)</option><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option><option value="catppuccin-latte">catppuccin-latte</option><option value="catppuccin-frappe">catppuccin-frappe</option><option value="catppuccin-macchiato">catppuccin-macchiato</option><option value="catppuccin-mocha">catppuccin-mocha</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 1.17.0 on <span class="colophon-date" title="Monday 3 August 2026 20:15">Monday 3 August 2026</span>. Using Julia version 1.11.9.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
+```</code></pre></div><a class="docs-sourcelink" target="_blank" href="https://github.com/ArthurJWH/Aircraft_Optimizer/blob/744d703dd079a27bbe8b2192839389bbff9820cc/MyPackage/src/MyPlots/plot_mesh.jl#L5-L29">source</a></section></details></article></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../../technical/sign_conventions/">« Sign Conventions</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="auto">Automatic (OS)</option><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option><option value="catppuccin-latte">catppuccin-latte</option><option value="catppuccin-frappe">catppuccin-frappe</option><option value="catppuccin-macchiato">catppuccin-macchiato</option><option value="catppuccin-mocha">catppuccin-mocha</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 1.17.0 on <span class="colophon-date" title="Monday 3 August 2026 20:28">Monday 3 August 2026</span>. Using Julia version 1.11.9.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
