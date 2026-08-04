@@ -59,5 +59,22 @@ mutable struct Coeffs
 end
 
 function Coeffs()
-    return Coeffs(ntuple(_ -> 0.0, 16)...)
+    return Coeffs(
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        Float64[],
+        Float64[],
+        Float64[],
+        Float64[],
+        Float64[],
+        Float64[],
+        Float64[],
+        Float64[],
+    )
 end

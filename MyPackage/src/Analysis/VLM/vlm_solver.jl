@@ -260,9 +260,7 @@ function _gen_mesh_rings!(
                 0.5 * (col_ref[i_span, i_chord] + col_ref[i_span + 1, i_chord])
             n, area = _panel_normal_area(A, B, C, D)
 
-            rings[(i_chord - 1) * n_span + i_span] = VortexRing(
-                (A, B, C, D), colpt, n, area, surface_id
-            )
+            push!(rings, VortexRing((A, B, C, D), colpt, n, area, surface_id))
         end
     end
 

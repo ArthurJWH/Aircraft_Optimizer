@@ -3,11 +3,16 @@ using MyPackage
 
 makedocs(
     sitename = "Aircraft Optimizer",
+    authors = "Arthur JWH",
     modules = [MyPackage],
 
     format = Documenter.HTML(
         inventory_version = string(pkgversion(MyPackage)),
-        assets = ["assets/style.css"],
+        assets = [
+            "assets/style.css",
+            "assets/favicon.ico",
+        ],
+        description = "Aircraft Optimizer Documentation — A VLM based workflow"
     ),
 
     pages = [
