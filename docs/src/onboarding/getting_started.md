@@ -13,10 +13,10 @@
 
 4. Open Visual Studio Code, go to Terminal > New Terminal, and run the following lines:
 
-    ```
-    git config --global user.name "Somebody"
-    git config --global user.email somebody@mail.com
-    ```
+   ```bash
+   $ git config --global user.name "Somebody"
+   $ git config --global user.email somebody@mail.com
+   ```
 
 5. Open EXTENSIONS tab and install:
     - Julia (identifier: julialang.language-julia)
