@@ -1,15 +1,15 @@
 using Makie
 
-using ..VLM: VLMMesh
+using ..Geometry
 
 """
-    plot_mesh(mesh::VLMMesh; min_extent = 5.0)
+    plot_mesh(mesh; min_extent = 5.0)
 
     Interactive 3D visualization of a VLM mesh.
 
     Arguments
     ---------
-    mesh : VLMMesh
+    mesh :
         The VLM mesh to plot
     min_extent : Float64, optional
         Minimum axis span in each direction (default is 5.0)
@@ -22,16 +22,15 @@ using ..VLM: VLMMesh
     Example
     -------
     ```julia
-    mesh = VLMMesh(...)  # Create a VLMMesh instance
     fig = plot_mesh(mesh; min_extent=5.0)
     display(fig)
     ```
 """
-function plot_mesh(mesh::VLMMesh; min_extent=5.0)
+function plot_mesh(mesh::AbstractMesh; min_extent=5.0)
     return plot_mesh([mesh]; min_extent=min_extent)
 end
 
-function plot_mesh(meshes::AbstractVector{<:VLMMesh}; min_extent=5.0)
+function plot_mesh(meshes::AbstractVector{<:AbstractMesh}; min_extent=5.0)
     fig, ax = _initialize_ax()
 
     xlims = (Inf, -Inf)
@@ -66,7 +65,7 @@ function _initialize_ax()
     return fig, ax
 end
 
-function _plot!(ax, mesh::VLMMesh)
+function _plot!(ax, mesh)
     x = mesh.vertices[1, :, :]
     y = mesh.vertices[2, :, :]
     z = mesh.vertices[3, :, :]
@@ -83,7 +82,7 @@ function _plot!(ax, mesh::VLMMesh)
     return nothing
 end
 
-function _mesh_bounds(mesh::VLMMesh, min_extent)
+function _mesh_bounds(mesh, min_extent)
     x = mesh.vertices[1, :, :]
     y = mesh.vertices[2, :, :]
     z = mesh.vertices[3, :, :]

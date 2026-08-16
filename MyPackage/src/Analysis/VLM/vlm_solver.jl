@@ -78,25 +78,63 @@ struct VLMSetup
     h::Float64
 end
 
-# function VLMSolver(
-#     plane::Plane,
-#     V_inf::Float64;
-#     alpha::AbstractVector{<:Float64}=[0.0],
-#     beta::AbstractVector{<:Float64}=[0.0],
-#     ground::Bool=false,
-#     h::Float64=0.0,
-#     rho::Float64=1.225,
-#     epsilon2::Float64=1e-10,
-#     n_chord::Int=10,
-#     n_span::Int=10,
-#     wake_length::Float64=3.0
-#     )
-#     for b in beta
-#         for a in alpha
-#             VLMSolver(plane, V_inf, (a, b), ground=ground, h=h, rho=rho, epsilon2=epsilon2, n_chord=n_chord, n_span=n_span, wake_length=wake_length)
-#         end
-#     end
-# end
+"""
+    VLMLoads
+
+    A struct that stores the calculated loads from the VLM.
+
+    Fields
+    ------
+"""
+struct VLMLoads
+    FX::Vector{Float64}
+    FX_dist::Vector{Vector{Float64}}
+    FY::Vector{Float64}
+    FY_dist::Vector{Vector{Float64}}
+    FZ::Vector{Float64}
+    FZ_dist::Vector{Vector{Float64}}
+    L::Vector{Float64}
+    L_dist::Vector{Vector{Float64}}
+    D::Vector{Float64}
+    D_dist::Vector{Vector{Float64}}
+    M::Vector{Float64}
+    M_dist::Vector{Vector{Float64}}
+    Ml::Vector{Float64}
+    Ml_dist::Vector{Vector{Float64}}
+    N::Vector{Float64}
+    N_dist::Vector{Vector{Float64}}
+end
+
+function VLMSolver(
+    plane::Plane,
+    V_inf::Float64;
+    alpha::AbstractVector{<:Float64}=[0.0],
+    beta::AbstractVector{<:Float64}=[0.0],
+    ground::Bool=false,
+    h::Float64=0.0,
+    rho::Float64=1.225,
+    epsilon2::Float64=1e-10,
+    n_chord::Int=10,
+    n_span::Int=10,
+    wake_length::Float64=3.0,
+)
+    for b in beta
+        for a in alpha
+            loads, setup = VLMSolver(
+                plane,
+                V_inf,
+                (a, b);
+                ground=ground,
+                h=h,
+                rho=rho,
+                epsilon2=epsilon2,
+                n_chord=n_chord,
+                n_span=n_span,
+                wake_length=wake_length,
+            )
+        end
+    end
+end
 
 """
     VLMSolver
@@ -153,7 +191,7 @@ function VLMSolver(
     F = lu(AIC)
     gamma = F \ RHS
 
-    forces = _calc_forces(
+    forces, span_segments = _calc_forces(
         gamma,
         n_panels,
         n_surfaces,
@@ -167,7 +205,8 @@ function VLMSolver(
         AIC_vz,
     )
 
-    loads = _calc_loads(forces, rings, CG, n_surfaces, rot)
+    loads = _calc_loads(forces, span_segments, rings, CG, n_surfaces, rot)
+    vlm_loads = VLMLoads(loads...)
 
     # NEW: Trefftz-plane induced drag and total lift, appended as extra
     # return values.
@@ -175,7 +214,7 @@ function VLMSolver(
         gamma, rings, surfaces, rho, V_dir, V_inf, rot, epsilon2
     )
 
-    return (loads..., L_trefftz, L_dist_trefftz, D_trefftz, D_dist_trefftz)
+    return (vlm_loads, setup)
 end
 
 function _gen_vortex_geom(meshes::AbstractVector{<:VLMMesh})
@@ -660,6 +699,7 @@ function _calc_forces(
 )
     V_free = V_dir * V_inf
     forces = Vector{Matrix{Vec3}}(undef, n_surfaces)
+    span_segments = Vector{Matrix{Float64}}(undef, n_surfaces)
 
     Vx = AIC_vx * gamma
     Vy = AIC_vy * gamma
@@ -672,15 +712,15 @@ function _calc_forces(
         mirror_xz = surface.mirror_xz
         range = surface.range
         start = range.start
+        row_len = (1 + mirror_xz) * n_span
 
-        forces[i] = Matrix{Vec3}(undef, (mirror_xz + 1) * n_span, n_chord)
+        forces[i] = Matrix{Vec3}(undef, row_len, n_chord)
+        span_segments[i] = Matrix{Float64}(undef, row_len, n_chord)
 
         for j in range
             rj = rings[j]
             span_vec = rj.corners[2] - rj.corners[1]
             chord_vec = rj.corners[4] - rj.corners[1]
-
-            row_len = (1 + mirror_xz) * n_span
 
             delta_gamma_c, delta_gamma_s = _calc_delta_gamma(
                 gamma, j, start, row_len
@@ -694,11 +734,12 @@ function _calc_forces(
             end
 
             i_span, i_chord = _j1dto2d(j, start, n_span, Val(mirror_xz))
+            span_segments[i][i_span, i_chord] = span_vec[2]
             forces[i][i_span, i_chord] = rho * cross(V_total, vector)
         end
     end
 
-    return forces
+    return forces, span_segments
 end
 
 function _calc_delta_gamma(
@@ -727,6 +768,7 @@ end
 
 function _calc_loads(
     forces::Vector{Matrix{Vec3}},
+    span_segments::Vector{Matrix{Float64}},
     rings::Vector{VortexRing},
     CG::Vec3,
     n_surfaces::Int,
@@ -765,6 +807,7 @@ function _calc_loads(
 
     for i in 1:n_surfaces
         surface_forces = forces[i]
+        surface_segments = span_segments[i]
         n_span, n_chord = size(surface_forces)
 
         FX_dist[i] = fill(0.0, n_span)
@@ -783,14 +826,15 @@ function _calc_loads(
                 fx = surface_forces[j, k][1]
                 fy = surface_forces[j, k][2]
                 fz = surface_forces[j, k][3]
+                span_segment = surface_segments[j, k]
 
                 FX[i] += fx
                 FY[i] += fy
                 FZ[i] += fz
 
-                FX_dist[i][j] += fx
-                FY_dist[i][j] += fy
-                FZ_dist[i][j] += fz
+                FX_dist[i][j] += fx / span_segment
+                FY_dist[i][j] += fy / span_segment
+                FZ_dist[i][j] += fz / span_segment
 
                 lift = -fx * sa + fz * ca
                 drag = fx * ca * cb - fy * sb + fz * sa * cb
@@ -798,8 +842,8 @@ function _calc_loads(
                 L[i] += lift
                 D[i] += drag
 
-                L_dist[i][j] += lift
-                D_dist[i][j] += drag
+                L_dist[i][j] += lift / span_segment
+                D_dist[i][j] += drag / span_segment
 
                 rj = rings[i1d]
                 i1d += 1
@@ -811,9 +855,9 @@ function _calc_loads(
                 Ml[i] += ml
                 N[i] += n
 
-                M_dist[i][j] += m
-                Ml_dist[i][j] += ml
-                N_dist[i][j] += n
+                M_dist[i][j] += m / span_segment
+                Ml_dist[i][j] += ml / span_segment
+                N_dist[i][j] += n / span_segment
             end
         end
     end

@@ -34,7 +34,7 @@ using ..Geometry
     vlm_meshes = VLMMesh(plane, [(10, 5), (15, 7)])
     ```
 """
-struct VLMMesh
+struct VLMMesh <: AbstractMesh
     vertices::Array{Float64, 3}
     mirror_xz::Bool
 end
