@@ -3,17 +3,19 @@ using ..PlaneInfo
 """
     Plane
 
-    A struct that represents an aircraft plane.
-    It includes a list of surfaces, aerodynamic coefficients, and additional data.
+Top-level representation of an aircraft assembly consisting of multiple lifting surfaces.
 
-    Fields
-    ------
-    surfaces : Vector{<:Aerosurface}
-        A vector of surfaces that make up the plane.
-    coeffs : Coeffs
-        The aerodynamic coefficients of the plane.
-    data : Data
-        Additional data about the plane.
+# Fields
+- `surfaces::Vector{<:Aerosurface}`: Collection of constituent aerodynamic surfaces ([`Aerosurface`](@ref)).
+- `coeffs::Coeffs`: Aerodynamic coefficients container.
+- `data::Data`: Aircraft performance and geometry data, including center of gravity `CG`.
+
+# Constructors
+```julia
+Plane(surfaces::Vector{<:Aerosurface}; CG=(0.0, 0.0, 0.0))
+```
+If `CG` is left as `(0.0, 0.0, 0.0)`, it defaults automatically to the quarter-chord of the mean aerodynamic chord
+of the primary surface: `(pos[1] + 0.25 * surfaces[1].MAC, pos[2], pos[3])`.
 """
 struct Plane
     surfaces::Vector{<:Aerosurface}

@@ -5,26 +5,22 @@ using ..Geometry: Airfoil
 """
     plot_airfoil(airfoil::Airfoil; save=false)
 
-    Plots the top and bottom surfaces of the given `Airfoil` along with its camber line.
+Plots the upper and lower surfaces of the given [`Airfoil`](@ref MyPackage.Geometry.Airfoil) alongside its mean camber line using `Plots.jl`.
 
-    Arguments
-    ---------
-    airfoil : Airfoil
-        The airfoil to plot.
-    save : bool, optional
-        Whether to save the plot as a PNG file (default is False).
+# Arguments
+- `airfoil::Airfoil`: The airfoil object to plot.
+- `save::Bool`: Whether to save the plot as a PNG image adjacent to the source `.dat` file (default: `false`).
 
-    Returns
-    -------
-    p : Plot
-        The generated plot object.
+# Returns
+- `p::Plots.Plot`: The generated plot object.
 
-    Example
-    -------
-    ```julia
-    airfoil = Airfoil("NACA2412", "path/to/NACA2412.dat")
-    p = plot_airfoil(airfoil; save=true)
-    ```
+# Example
+```julia
+using Plots
+airfoil = airfoil_from_dat("assets/airfoils/Plain/Plain.dat")
+p = plot_airfoil(airfoil; save=false)
+display(p)
+```
 """
 function plot_airfoil(airfoil::Airfoil; save=false)
     x = range(0.0, 1.0; length=100)

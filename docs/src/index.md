@@ -11,4 +11,5 @@
 # Aircraft Optimizer
 
 ```@contents
+Depth = 1
 ```

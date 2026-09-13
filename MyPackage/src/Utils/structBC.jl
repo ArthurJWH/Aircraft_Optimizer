@@ -1,42 +1,35 @@
 """
     AbstractBC
 
-    Abstract type for boundary conditions applied in Spline.
-    Used in function declarations to support different BC types.
+Abstract supertype for boundary conditions applied to spline interpolation in `MyPackage.Utils`.
 """
 abstract type AbstractBC end
 
 """
     NopBC
 
-    Struct for no boundary condition applied. Used as a filler.
+Null boundary condition indicating no explicit derivative constraint applied.
 
-    Example
-    -------
-    ```julia
-    bc = NopBC()  # No boundary condition
-    ```
+# Example
+```julia
+bc = NopBC()  # No boundary condition
+```
 """
 struct NopBC <: AbstractBC end
 
 """
-    FirstDerivativeBC
+    FirstDerivativeBC(value, index)
 
-    Struct for boundary condition for the first derivative of a function.
-    Defines the value of the first derivative at a given index.
+Boundary condition constraining the first derivative ``f'(x)`` to `value` at knot index `index` (or `:left` / `:right`).
 
-    Fields
-    ------
-    value : Float64
-        The value of the first derivative at the given index.
-    index : T
-        The index at which the boundary condition is applied.
+# Fields
+- `value::Float64`: Target first derivative value.
+- `index::T`: Index (or symbol `:left` / `:right`) where the boundary condition is enforced.
 
-    Example
-    -------
-    ```julia
-    bc = FirstDerivativeBC(0.0, 1)  # First derivative is zero at index 1
-    ```
+# Example
+```julia
+bc = FirstDerivativeBC(0.0, :left)  # Zero first derivative at left boundary
+```
 """
 struct FirstDerivativeBC{T} <: AbstractBC
     value::Float64
@@ -44,21 +37,18 @@ struct FirstDerivativeBC{T} <: AbstractBC
 end
 
 """
-    SecondDerivativeBC
+    SecondDerivativeBC(value, index)
 
-    Boundary condition for the second derivative of a function.
-    Defines the value of the second derivative at a given index.
+Boundary condition constraining the second derivative ``f''(x)`` to `value` at knot index `index` (or `:left` / `:right`).
 
-    value : Float64
-        The value of the second derivative at the given index.
-    index : T
-        The index at which the boundary condition is applied.
+# Fields
+- `value::Float64`: Target second derivative value.
+- `index::T`: Index (or symbol `:left` / `:right`) where the boundary condition is enforced.
 
-    Example
-    -------
-    ```julia
-    bc = SecondDerivativeBC(0.0, 1)  # Second derivative is zero at index 1
-    ```
+# Example
+```julia
+bc = SecondDerivativeBC(0.0, :left)  # Natural / zero-curvature boundary condition at left boundary
+```
 """
 struct SecondDerivativeBC{T} <: AbstractBC
     value::Float64
@@ -66,21 +56,18 @@ struct SecondDerivativeBC{T} <: AbstractBC
 end
 
 """
-    ThirdDerivativeBC
+    ThirdDerivativeBC(value, index)
 
-    Boundary condition for the third derivative of a function.
-    Defines the value of the third derivative at a given index.
+Boundary condition constraining the third derivative ``f'''(x)`` to `value` at knot index `index` (or `:left` / `:right`).
 
-    value : Float64
-        The value of the third derivative at the given index.
-    index : T
-        The index at which the boundary condition is applied.
+# Fields
+- `value::Float64`: Target third derivative value.
+- `index::T`: Index (or symbol `:left` / `:right`) where the boundary condition is enforced.
 
-    Example
-    -------
-    ```julia
-    bc = ThirdDerivativeBC(0.0, 1)  # Third derivative is zero at index 1
-    ```
+# Example
+```julia
+bc = ThirdDerivativeBC(0.0, :right)  # Third derivative constraint at right boundary
+```
 """
 struct ThirdDerivativeBC{T} <: AbstractBC
     value::Float64

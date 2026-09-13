@@ -1,38 +1,28 @@
-using ..Utils
-using ..Geometry
-
 """
-    VLMMesh
+    VLMMesh <: AbstractMesh
 
-    A struct that represents the VLM mesh of a Plane.
-    It includes the vertices of the mesh and a flag indicating whether the mesh is mirrored in the xz-plane.
+Surface panel mesh representation for an individual aerodynamic surface in the aircraft.
 
-    Fields
-    ------
-    vertices : Array{Float64, 3}
-        A 3D array containing the coordinates of the mesh vertices.
-        The dimensions are (3, n_span + 1, n_chord + 1), where n_span and n_chord are the number of spanwise and chordwise panels, respectively.
-    mirror_xz : Bool
-        A boolean flag indicating whether the mesh is mirrored in the xz-plane.
+Stores the 3D vertex coordinates of the discretized camber surface and symmetry flags.
 
-    Arguments
-    ---------
-    plane : Plane
-        The Plane object for which the VLM mesh is to be generated.
-    n_chordxspan : Vector{NTuple{2, Int}}
-        A vector of tuples specifying the number of chordwise and spanwise panels for each surface of the plane.
+# Fields
+- `vertices::Array{Float64, 3}`: 3D array of vertex coordinates with dimensions `(3, n_span + 1, n_chord + 1)`.
+    - Dimension 1: Cartesian components `(x, y, z)`, in `m`.
+  - Dimension 2: Spanwise index from root to tip.
+  - Dimension 3: Chordwise index from leading edge to trailing edge.
+- `mirror_xz::Bool`: Whether the mesh is mirrored across the XZ-plane (Y -> -Y).
 
-    Returns
-    -------
-    meshes : Vector{VLMMesh}
-        A vector of VLMMesh objects, one for each surface of the plane.
+# Constructors
+```julia
+VLMMesh(plane::Plane, n_chordxspan::Vector{NTuple{2, Int}})
+VLMMesh(plane::Plane, n_chord::Int, n_span::Int)
+VLMMesh(surface::Aerosurface, n_chord::Int, n_span::Int)
+```
 
-    Example
-    -------
-    ```julia
-    plane = Plane(surfaces)
-    vlm_meshes = VLMMesh(plane, [(10, 5), (15, 7)])
-    ```
+# Example
+```julia
+meshes = VLMMesh(plane, [(20, 30)])
+```
 """
 struct VLMMesh <: AbstractMesh
     vertices::Array{Float64, 3}

@@ -1,40 +1,35 @@
 using SparseArrays
 
-raw"""
+"""
     AbstractSpline
 
-    Abstract type for spline interpolation.
-    Used in function declarations to support different spline types.
+Abstract type for spline interpolation.
+Used in function declarations to support different spline types.
 """
 abstract type AbstractSpline end
 
-raw"""
+"""
     LinearSpline
 
-    Struct for linear spline interpolation.
-    A relative-coordinate spline is applied, where the spline evaluated at a point `x` in the interval `[x_i, x_{i+1}]` is given by:
+Piecewise linear spline interpolation over a sequence of 1D coordinates.
 
-    ```math
-        spl_i(x) = coeffs[2\cdot i - 1] + coeffs[2\cdot i] (x - x_i)
-    ```
+A relative-coordinate formulation is evaluated: for ``x \\in [x_i, x_{i+1}]``,
+```math
+\\text{spl}_i(x) = c_{2i-1} + c_{2i} (x - x_i)
+```
 
-    Fields
-    ------
-    xs : Vector{Float64}
-        The x-coordinates of the data points.
-    fs : Vector{Float64}
-        The function values at the data points.
-    coeffs : Vector{Float64}
-        The computed coefficients of the linear spline segments.
+# Fields
+- `xs::Vector{Float64}`: Monotonically increasing knot coordinates.
+- `fs::Vector{Float64}`: Function values at knot coordinates.
+- `coeffs::Vector{Float64}`: Segment interpolation coefficients.
 
-    Example
-    -------
-    ```julia
-    xs = [0.0, 1.0, 2.0]
-    fs = [1.0, 2.0, 0.0]
-    spl = LinearSpline(xs, fs)
-    f = spl(1.5) # Evaluate the spline at x = 1.5
-    ```
+# Example
+```julia
+xs = [0.0, 1.0, 2.0]
+fs = [1.0, 2.0, 0.0]
+spl = LinearSpline(xs, fs)
+val = spl(1.5)  # Evaluates spline at x = 1.5
+```
 """
 mutable struct LinearSpline <: AbstractSpline
     xs::Vector{Float64}
@@ -42,36 +37,30 @@ mutable struct LinearSpline <: AbstractSpline
     coeffs::Vector{Float64}
 end
 
-raw"""
+"""
     QuadraticSpline
 
-    Struct for quadratic spline interpolation.
-    A relative-coordinate spline is applied, where the spline evaluated at a point `x` in the interval `[x_i, x_{i+1}]` is given by:
+Piecewise quadratic spline interpolation with configurable boundary conditions.
 
-    ```math
-        spl_i(x) = coeffs[3\cdot i - 2] + coeffs[3\cdot i - 1] (x - x_i) + coeffs[3\cdot i] (x - x_i)^2
-    ```
+A relative-coordinate formulation is evaluated: for ``x \\in [x_i, x_{i+1}]``,
+```math
+\\text{spl}_i(x) = c_{3i-2} + c_{3i-1} (x - x_i) + c_{3i} (x - x_i)^2
+```
 
-    Fields
-    ------
-    xs : Vector{Float64}
-        The x-coordinates of the data points.
-    fs : Vector{Float64}
-        The function values at the data points.
-    coeffs : Vector{Float64}
-        The computed coefficients of the quadratic spline segments.
-    bc : AbstractBC
-        The boundary condition applied to the spline.
+# Fields
+- `xs::Vector{Float64}`: Monotonically increasing knot coordinates.
+- `fs::Vector{Float64}`: Function values at knot coordinates.
+- `coeffs::Vector{Float64}`: Segment quadratic coefficients.
+- `bc::AbstractBC`: Boundary condition applied to close the spline system.
 
-    Example
-    -------
-    ```julia
-    xs = [0.0, 1.0, 2.0]
-    fs = [1.0, 2.0, 0.0]
-    bc = SecondDerivativeBC(0.0, :left)
-    spl = QuadraticSpline(xs, fs; bc=bc)
-    f = spl(1.5) # Evaluate the spline at x = 1.5
-    ```
+# Example
+```julia
+xs = [0.0, 1.0, 2.0]
+fs = [1.0, 2.0, 0.0]
+bc = SecondDerivativeBC(0.0, :left)
+spl = QuadraticSpline(xs, fs; bc=bc)
+val = spl(1.5)
+```
 """
 mutable struct QuadraticSpline <: AbstractSpline
     xs::Vector{Float64}
@@ -80,39 +69,32 @@ mutable struct QuadraticSpline <: AbstractSpline
     bc::AbstractBC
 end
 
-raw"""
+"""
     CubicSpline
 
-    Struct for cubic spline interpolation.
-    A relative-coordinate spline is applied, where the spline evaluated at a point `x` in the interval `[x_i, x_{i+1}]` is given by:
+Piecewise cubic spline interpolation with two independent boundary conditions.
 
-    ```math
-        spl_i(x) = coeffs[4\cdot i - 3] + coeffs[4\cdot i - 2] (x - x_i) + coeffs[4\cdot i - 1] (x - x_i)^2 + coeffs[4\cdot i] (x - x_i)^3
-    ```
+A relative-coordinate formulation is evaluated: for ``x \\in [x_i, x_{i+1}]``,
+```math
+\\text{spl}_i(x) = c_{4i-3} + c_{4i-2} (x - x_i) + c_{4i-1} (x - x_i)^2 + c_{4i} (x - x_i)^3
+```
 
-    Fields
-    ------
-    xs : Vector{Float64}
-        The x-coordinates of the data points.
-    fs : Vector{Float64}
-        The function values at the data points.
-    coeffs : Vector{Float64}
-        The computed coefficients of the cubic spline segments.
-    bc1 : AbstractBC
-        The first boundary condition applied to the spline.
-    bc2 : AbstractBC
-        The second boundary condition applied to the spline.
+# Fields
+- `xs::Vector{Float64}`: Monotonically increasing knot coordinates.
+- `fs::Vector{Float64}`: Function values at knot coordinates.
+- `coeffs::Vector{Float64}`: Segment cubic coefficients.
+- `bc1::AbstractBC`: First boundary condition applied to the spline.
+- `bc2::AbstractBC`: Second boundary condition applied to the spline.
 
-    Example
-    -------
-    ```julia
-    xs = [0.0, 1.0, 2.0]
-    fs = [1.0, 2.0, 0.0]
-    bc1 = SecondDerivativeBC(0.0, :left)
-    bc2 = SecondDerivativeBC(0.0, :right)
-    spl = CubicSpline(xs, fs; bc1=bc1, bc2=bc2)
-    f = spl(1.5) # Evaluate the spline at x = 1.5
-    ```
+# Example
+```julia
+xs = [0.0, 1.0, 2.0]
+fs = [1.0, 2.0, 0.0]
+bc1 = SecondDerivativeBC(0.0, :left)
+bc2 = SecondDerivativeBC(0.0, :right)
+spl = CubicSpline(xs, fs; bc1=bc1, bc2=bc2)
+val = spl(1.5)
+```
 """
 mutable struct CubicSpline <: AbstractSpline
     xs::Vector{Float64}
@@ -437,23 +419,22 @@ end
     return min(i, length(xs) - 1)
 end
 
-raw"""
-    LinearSplineFromCoeffs
+"""
+    LinearSplineFromCoeffs(xs, coeffs)
 
-    Create a LinearSpline from given x-coordinates and coefficients.
-    The coefficients should be provided in the order of the linear segments, as follows:
+Create a [`LinearSpline`](@ref) from knot coordinates `xs` and precomputed linear coefficients.
 
-    ```math
-        f(x) = a_1 + a_2 (x - x_i)
-    ```
+The polynomial on segment ``i`` is:
+```math
+f(x) = c_{2i-1} + c_{2i} (x - x_i)
+```
 
-    Example
-    -------
-    ```julia
-    xs = [0.0, 1.0, 2.0]
-    coeffs = [1.0, 1.0, 2.0, -2.0]  # Coefficients for two segments
-    spl = LinearSplineFromCoeffs(xs, coeffs)
-    ```
+# Example
+```julia
+xs = [0.0, 1.0, 2.0]
+coeffs = [1.0, 1.0, 2.0, -2.0]  # Coefficients for two segments
+spl = LinearSplineFromCoeffs(xs, coeffs)
+```
 """
 function LinearSplineFromCoeffs(
     xs::AbstractVector{<:AbstractFloat}, coeffs::AbstractVector{<:AbstractFloat}
@@ -461,23 +442,22 @@ function LinearSplineFromCoeffs(
     return LinearSpline(xs, [0.0], coeffs)
 end
 
-raw"""
-    QuadraticSplineFromCoeffs
+"""
+    QuadraticSplineFromCoeffs(xs, coeffs)
 
-    Create a QuadraticSpline from given x-coordinates and coefficients.
-    The coefficients should be provided in the order of the quadratic segments, as follows:
+Create a [`QuadraticSpline`](@ref) from knot coordinates `xs` and precomputed quadratic coefficients.
 
-    ```math
-        f(x) = a_1 + a_2 (x - x_i) + a_3 (x - x_i)^2
-    ```
+The polynomial on segment ``i`` is:
+```math
+f(x) = c_{3i-2} + c_{3i-1} (x - x_i) + c_{3i} (x - x_i)^2
+```
 
-    Example
-    -------
-    ```julia
-    xs = [0.0, 1.0, 2.0]
-    coeffs = [1.0, 1.0, 0.5, 2.0, -2.0, 1.0]  # Coefficients for two segments
-    spl = QuadraticSplineFromCoeffs(xs, coeffs)
-    ```
+# Example
+```julia
+xs = [0.0, 1.0, 2.0]
+coeffs = [1.0, 1.0, 0.5, 2.0, -2.0, 1.0]  # Coefficients for two segments
+spl = QuadraticSplineFromCoeffs(xs, coeffs)
+```
 """
 function QuadraticSplineFromCoeffs(
     xs::AbstractVector{<:AbstractFloat}, coeffs::AbstractVector{<:AbstractFloat}
@@ -485,23 +465,22 @@ function QuadraticSplineFromCoeffs(
     return QuadraticSpline(xs, [0.0], coeffs, NopBC())
 end
 
-raw"""
-    CubicSplineFromCoeffs
+"""
+    CubicSplineFromCoeffs(xs, coeffs)
 
-    Create a CubicSpline from given x-coordinates and coefficients.
-    The coefficients should be provided in the order of the cubic segments, as follows:
+Create a [`CubicSpline`](@ref) from knot coordinates `xs` and precomputed cubic coefficients.
 
-    ```math
-        f(x) = a_1 + a_2 (x - x_i) + a_3 (x - x_i)^2 + a_4 (x - x_i)^3
-    ```
+The polynomial on segment ``i`` is:
+```math
+f(x) = c_{4i-3} + c_{4i-2} (x - x_i) + c_{4i-1} (x - x_i)^2 + c_{4i} (x - x_i)^3
+```
 
-    Example
-    -------
-    ```julia
-    xs = [0.0, 1.0, 2.0]
-    coeffs = [1.0, 1.0, 0.5, 2.0, -2.0, 1.0, 0.5, -1.0]  # Coefficients for two segments
-    spl = CubicSplineFromCoeffs(xs, coeffs)
-    ```
+# Example
+```julia
+xs = [0.0, 1.0, 2.0]
+coeffs = [1.0, 1.0, 0.5, 2.0, -2.0, 1.0, 0.5, -1.0]  # Coefficients for two segments
+spl = CubicSplineFromCoeffs(xs, coeffs)
+```
 """
 function CubicSplineFromCoeffs(
     xs::AbstractVector{<:AbstractFloat}, coeffs::AbstractVector{<:AbstractFloat}

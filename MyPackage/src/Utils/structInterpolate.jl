@@ -1,26 +1,21 @@
-raw"""
-    Interpolate
+"""
+    Interpolate(xs, fs)
+    Interpolate(coeffs)
 
-    Create an interpolating function from given x-coordinates and function values.
-    The interpolant is a polynomial of degree n-1, where n is the number of data points.
+Polynomial interpolation passing exactly through all `n` given data points `(xs, fs)` (degree ``n - 1``).
 
-    Fields
-    ------
-    xs : Vector{Float64}
-        The x-coordinates of the data points.
-    fs : Vector{Float64}
-        The function values at the data points.
-    coeffs : Vector{Float64}
-        The calculated coefficients of the interpolating polynomial.
+# Fields
+- `xs::Vector{Float64}`: Monotonically increasing knot coordinates.
+- `fs::Vector{Float64}`: Function values at knot coordinates.
+- `coeffs::Vector{Float64}`: Calculated polynomial coefficients.
 
-    Example
-    -------
-    ```julia
-    xs = [0.0, 1.0, 2.0]
-    fs = [1.0, 2.0, 0.0]
-    interp = Interpolate(xs, fs)
-    f = interp(1.5)  # Evaluate the interpolating polynomial at x=1.5
-    ```
+# Example
+```julia
+xs = [0.0, 1.0, 2.0]
+fs = [1.0, 2.0, 0.0]
+interp = Interpolate(xs, fs)
+val = interp(1.5)  # Evaluates polynomial at x = 1.5
+```
 """
 mutable struct Interpolate
     xs::Vector{Float64}

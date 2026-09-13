@@ -23,10 +23,11 @@
 """
     legendre
 
-    A constant that stores the roots and weights for Gauss-Legendre quadrature for n=1 to 5.
-    Each entry is a tuple containing two arrays:
-    - The first array contains the roots of the Legendre polynomial of degree n.
-    - The second array contains the corresponding weights for the quadrature.
+A constant lookup tuple storing precomputed roots (nodes) and quadrature weights for Gauss-Legendre quadrature (GLQ) of orders ``n = 1`` to ``5``.
+
+Each entry is a tuple containing two sub-tuples:
+1. Quadrature evaluation roots on the reference interval ``[-1, 1]``.
+2. Corresponding Gauss-Legendre weights.
 """
 const legendre = (
     nothing,
@@ -69,24 +70,22 @@ const legendre = (
 )
 
 """
-    IntegrateGLQ
+    IntegrateGLQ(f; n=3)
 
-    A struct for performing numerical integration using Gauss-Legendre quadrature.
+Callable functor for performing numerical integration using Gauss-Legendre quadrature (GLQ) of order `n`.
 
-    Fields
-    ------
-    f : F
-        The function to be integrated.
-    n : Int
-        The number of points to use in the quadrature (1 to 5).
+Transforms the evaluation domain from ``[-1, 1]`` to arbitrary integration limits ``[a, b]``.
 
-    Example
-    -------
-    ```julia
-    f(x) = x^2
-    integrator = IntegrateGLQ(f, 3)
-    result = integrator(0.0, 1.0)  # Integrates f(x) from 0 to 1
-    ```
+# Fields
+- `f::F`: The integrand function to be integrated.
+- `n::Int`: The number of quadrature points to use (`1` to `5`, default: `3`).
+
+# Example
+```julia
+f(x) = x^2
+integrator = IntegrateGLQ(f, 3)
+result = integrator(0.0, 1.0)  # Integrates x^2 from 0 to 1 -> ~1/3
+```
 """
 struct IntegrateGLQ{F}
     f::F

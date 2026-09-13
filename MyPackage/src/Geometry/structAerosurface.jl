@@ -3,39 +3,42 @@ using ..Utils
 """
     Aerosurface
 
-    A mutable struct that represents an aerodynamic surface, such as wing, horizontal stabilizer, or vertical stabilizer.
+Parametric representation of an aerodynamic lifting surface (main wing, horizontal stabilizer, vertical tail, canard, or winglet).
 
-    Fields
-    ------
-    name : String, optional
-        The name of the aerosurface. Default is "Aerosurface".
-    mirror_xz : Bool, optional
-        Indicates whether the aerosurface is mirrored across the xz-plane. Default is true.
-    vertical : Bool, optional
-        Indicates whether the aerosurface is vertical. Default is false.
-    pos : Tuple{Float64, Float64, Float64}, optional
-        The position of the aerosurface root leading edge in 3D space. Default is (0.0, 0.0, 0.0).
-    rot : Tuple{Float64, Float64, Float64}, optional
-        The rotation of the aerosurface in 3D space. Default is (0.0, 0.0, 0.0).
-        Currently not used in the code, but can be used for future development.
-    b : Float64, optional
-        The span of the aerosurface. Default is 1.0.
-    ys : Vector{Float64}, optional
-        The spanwise fraction coordinates of the airfoil positions in the aerosurface. Default is [0.0, 1.0].
-    airfoils : Vector{<:Airfoil}, optional
-        The airfoils used along the span of the aerosurface. Default is a vector of two plain airfoils.
-    chord : Function, optional
-        A function that defines the chord length distribution in terms of span fractions of the aerosurface. Default is a constant function returning 1.0.
-    twist : Function, optional
-        A function that defines the twist distribution in terms of span fractions of the aerosurface. Default is a constant function returning 0.0.
-    tw_center : Float64, optional
-        The chordwise fraction of each section where the twist is applied. Default is 0.25.
-    sweep : Function, optional
-        A function that defines the sweep distribution in terms of span fractions of the aerosurface. Default is a constant function returning 0.0.
-    sw_center : Float64, optional
-        The chordwise fraction of each section where the sweep is applied. Default is 0.25.
-    dihedral : Function, optional
-        A function that defines the dihedral distribution in terms of span fractions of the aerosurface. Default is a constant function returning 0.0.
+Geometric distributions (`chord`, `twist`, `sweep`, `dihedral`) are defined as functions of the non-dimensional semi-span station
+``y \\in [0, 1]`` (where ``y = 0`` corresponds to the root and ``y = 1`` corresponds to the tip).
+
+# Fields
+- `name::String`: User-defined surface name (default: `"Aerosurface"`).
+- `mirror_xz::Bool`: Whether the surface is mirrored across the XZ-plane (Y -> -Y) to produce a symmetric port semi-span (default: `true`).
+- `vertical::Bool`: Whether the surface is oriented vertically (span along Z axis) (default: `false`).
+- `pos::Tuple{Float64, Float64, Float64}`: Global 3D offset `(x, y, z)` in `m` of the root leading edge (default: `(0.0, 0.0, 0.0)`).
+- `rot::Tuple{Float64, Float64, Float64}`: 3D rotation angles (reserved for future kinematic transformations).
+- `b::Float64`: Total physical wingspan in `m` (inclusive of mirrored semi-span if `mirror_xz = true`).
+- `S::Float64`: Reference planform area, in `m²`, computed via numerical quadrature ``S = b \\int_0^1 c(y) dy``.
+- `AR::Float64`: Aspect ratio ``AR = b^2 / S``.
+- `MGC::Float64`: Mean geometric chord in `m`, ``MGC = \\int_0^1 c(y) dy``.
+- `MAC::Float64`: Mean aerodynamic chord in `m`, ``MAC = \\frac{1}{MGC} \\int_0^1 c(y)^2 dy``.
+- `ys::Vector{Float64}`: Spanwise stations ``y_i \\in [0, 1]`` corresponding to the defined `airfoils`.
+- `airfoils::Vector{<:Airfoil}`: Collection of [`Airfoil`](@ref) profiles placed at each station in `ys`.
+- `chord::Function`: Chord distribution function ``c(y)`` returning physical chord length in `m`.
+- `twist::Function`: Geometric twist distribution function ``\\theta(y)`` in `deg` (positive pitches section up).
+- `tw_center::Float64`: Chordwise fraction of section about which twist rotation is applied (default: `0.25`).
+- `sweep::Function`: Sweep angle function ``\\Lambda(y)`` in `deg` (positive sweeps aft +X).
+- `sw_center::Float64`: Chordwise fraction reference line for sweep offset (default: `0.25`).
+- `dihedral::Function`: Dihedral angle function ``\\Gamma(y)`` in `deg` (positive deflects tip upward +Z).
+
+# Example
+```julia
+plain = airfoil_from_dat("assets/airfoils/Plain/Plain.dat")
+wing = Aerosurface(
+    name="MainWing",
+    airfoils=[plain, plain],
+    b=6.0,
+    chord=y -> 2 * sqrt(1 - y^2),  # Elliptical chord distribution
+    sw_center=0.5,
+)
+```
 """
 mutable struct Aerosurface{chordF, twistF, sweepF, dihedralF}
     # y is the spanwise fraction coordinate

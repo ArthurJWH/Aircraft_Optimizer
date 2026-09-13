@@ -3,28 +3,27 @@ using Makie
 using ..Geometry
 
 """
-    plot_mesh(mesh; min_extent = 5.0)
+    plot_mesh(mesh::AbstractMesh; min_extent=5.0)
+    plot_mesh(meshes::AbstractVector{<:AbstractMesh}; min_extent=5.0)
 
-    Interactive 3D visualization of a VLM mesh.
+Generates an interactive 3D visualization of one or more VLM surface meshes using Makie.
 
-    Arguments
-    ---------
-    mesh :
-        The VLM mesh to plot
-    min_extent : Float64, optional
-        Minimum axis span in each direction (default is 5.0)
+# Arguments
+- `mesh` or `meshes`: A [`MyPackage.VLM.VLMMesh`](@ref) or vector of meshes (e.g. `geom.meshes`).
+- `min_extent::Float64`: Minimum spatial axis span in each coordinate direction in `m` (default: `5.0`).
 
-    Returns
-    -------
-    fig : Figure
-        The Makie figure containing the 3D plot of the mesh.
+# Returns
+- `fig::Makie.Figure`: The Makie figure containing the rendered 3D surface and wireframe.
 
-    Example
-    -------
-    ```julia
-    fig = plot_mesh(mesh; min_extent=5.0)
-    display(fig)
-    ```
+# Example
+```julia
+using GLMakie
+GLMakie.activate!()
+using MyPackage.MyPlots
+
+fig = plot_mesh(geom.meshes)
+display(fig)
+```
 """
 function plot_mesh(mesh::AbstractMesh; min_extent=5.0)
     return plot_mesh([mesh]; min_extent=min_extent)
