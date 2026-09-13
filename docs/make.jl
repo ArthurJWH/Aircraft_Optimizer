@@ -50,5 +50,6 @@ makedocs(
 )
 
 deploydocs(
+    repo="github.com/ArthurJWH/Aircraft_Optimizer.git",
     devbranch="main",
 )
