@@ -5,11 +5,13 @@
 Polynomial interpolation passing exactly through all `n` given data points `(xs, fs)` (degree ``n - 1``).
 
 # Fields
-- `xs::Vector{Float64}`: Monotonically increasing knot coordinates.
-- `fs::Vector{Float64}`: Function values at knot coordinates.
-- `coeffs::Vector{Float64}`: Calculated polynomial coefficients.
+
+  - `xs::Vector{Float64}`: Monotonically increasing knot coordinates.
+  - `fs::Vector{Float64}`: Function values at knot coordinates.
+  - `coeffs::Vector{Float64}`: Calculated polynomial coefficients.
 
 # Example
+
 ```julia
 xs = [0.0, 1.0, 2.0]
 fs = [1.0, 2.0, 0.0]

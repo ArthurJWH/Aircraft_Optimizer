@@ -4,12 +4,13 @@
 Mutable container holding general geometric and flight performance properties of a plane.
 
 # Fields
-- `CG::Tuple{Float64, Float64, Float64}`: Center of gravity coordinates `(x, y, z)`, in `m`, in aircraft body axes.
-- `SM::Float64`: Static margin.
-- `MTOW::Float64`: Maximum takeoff weight, in `kg`.
-- `alpha_stall::Float64`: Stall angle of attack, in `deg`.
-- `beta_stall::Float64`: Stall sideslip angle, in `deg`.
-- `alpha_trim::Float64`: Trim angle of attack, in `deg`.
+
+  - `CG::Tuple{Float64, Float64, Float64}`: Center of gravity coordinates `(x, y, z)`, in `m`, in aircraft body axes.
+  - `SM::Float64`: Static margin.
+  - `MTOW::Float64`: Maximum takeoff weight, in `kg`.
+  - `alpha_stall::Float64`: Stall angle of attack, in `deg`.
+  - `beta_stall::Float64`: Stall sideslip angle, in `deg`.
+  - `alpha_trim::Float64`: Trim angle of attack, in `deg`.
 """
 mutable struct Data
     CG::Tuple{Float64, Float64, Float64}

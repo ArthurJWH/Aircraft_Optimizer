@@ -405,4 +405,3 @@ function _assemble_RHS(
 
     return RHS
 end
-

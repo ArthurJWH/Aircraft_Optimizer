@@ -4,16 +4,19 @@
 Read a `.dat` file containing airfoil coordinates and return the points as a 2D array.
 
 # Arguments
-- `filename::String`: Path to the `.dat` file.
-- `header_lines::Int`: Number of header lines to skip (default: `1`).
+
+  - `filename::String`: Path to the `.dat` file.
+  - `header_lines::Int`: Number of header lines to skip (default: `1`).
 
 # Returns
-- `Array{Float64, 2}`: A `(N, 2)` matrix of `(x, z)` airfoil coordinates, ordered from
-  trailing edge over the upper surface through the leading edge and back to the trailing edge.
+
+  - `Array{Float64, 2}`: A `(N, 2)` matrix of `(x, z)` airfoil coordinates, ordered from
+    trailing edge over the upper surface through the leading edge and back to the trailing edge.
 
 # Example
+
 ```julia
-points = read_dat("path/to/airfoil.dat")
+points = read_dat(\"path/to/airfoil.dat\")
 ```
 """
 function read_dat(filename::String; header_lines::Int=1)

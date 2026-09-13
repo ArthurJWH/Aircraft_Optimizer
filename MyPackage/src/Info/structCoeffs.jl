@@ -4,22 +4,23 @@
 Mutable container storing aircraft and per-surface aerodynamic coefficients.
 
 # Fields
-- `CX::Float64`: Total body-axis force coefficient in X (aft positive).
-- `CY::Float64`: Total body-axis force coefficient in Y (starboard positive).
-- `CZ::Float64`: Total body-axis force coefficient in Z (upward positive).
-- `CL::Float64`: Total wind-axis lift coefficient.
-- `CD::Float64`: Total wind-axis drag coefficient.
-- `CM::Float64`: Total pitching moment coefficient.
-- `CMl::Float64`: Total rolling moment coefficient.
-- `CN::Float64`: Total yawing moment coefficient.
-- `CX_surf::Vector{Float64}`: Per-surface X force coefficient.
-- `CY_surf::Vector{Float64}`: Per-surface Y side-force coefficient.
-- `CZ_surf::Vector{Float64}`: Per-surface Z force coefficient.
-- `CL_surf::Vector{Float64}`: Per-surface lift coefficient.
-- `CD_surf::Vector{Float64}`: Per-surface drag coefficient.
-- `CM_surf::Vector{Float64}`: Per-surface pitching moment coefficient.
-- `CMl_surf::Vector{Float64}`: Per-surface rolling moment coefficient.
-- `CN_surf::Vector{Float64}`: Per-surface yawing moment coefficient.
+
+  - `CX::Float64`: Total body-axis force coefficient in X (aft positive).
+  - `CY::Float64`: Total body-axis force coefficient in Y (starboard positive).
+  - `CZ::Float64`: Total body-axis force coefficient in Z (upward positive).
+  - `CL::Float64`: Total wind-axis lift coefficient.
+  - `CD::Float64`: Total wind-axis drag coefficient.
+  - `CM::Float64`: Total pitching moment coefficient.
+  - `CMl::Float64`: Total rolling moment coefficient.
+  - `CN::Float64`: Total yawing moment coefficient.
+  - `CX_surf::Vector{Float64}`: Per-surface X force coefficient.
+  - `CY_surf::Vector{Float64}`: Per-surface Y side-force coefficient.
+  - `CZ_surf::Vector{Float64}`: Per-surface Z force coefficient.
+  - `CL_surf::Vector{Float64}`: Per-surface lift coefficient.
+  - `CD_surf::Vector{Float64}`: Per-surface drag coefficient.
+  - `CM_surf::Vector{Float64}`: Per-surface pitching moment coefficient.
+  - `CMl_surf::Vector{Float64}`: Per-surface rolling moment coefficient.
+  - `CN_surf::Vector{Float64}`: Per-surface yawing moment coefficient.
 """
 mutable struct Coeffs
     CX::Float64 # Force coefficient in x direction

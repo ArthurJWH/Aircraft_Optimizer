@@ -26,8 +26,9 @@
 A constant lookup tuple storing precomputed roots (nodes) and quadrature weights for Gauss-Legendre quadrature (GLQ) of orders ``n = 1`` to ``5``.
 
 Each entry is a tuple containing two sub-tuples:
-1. Quadrature evaluation roots on the reference interval ``[-1, 1]``.
-2. Corresponding Gauss-Legendre weights.
+
+ 1. Quadrature evaluation roots on the reference interval ``[-1, 1]``.
+ 2. Corresponding Gauss-Legendre weights.
 """
 const legendre = (
     nothing,
@@ -77,10 +78,12 @@ Callable functor for performing numerical integration using Gauss-Legendre quadr
 Transforms the evaluation domain from ``[-1, 1]`` to arbitrary integration limits ``[a, b]``.
 
 # Fields
-- `f::F`: The integrand function to be integrated.
-- `n::Int`: The number of quadrature points to use (`1` to `5`, default: `3`).
+
+  - `f::F`: The integrand function to be integrated.
+  - `n::Int`: The number of quadrature points to use (`1` to `5`, default: `3`).
 
 # Example
+
 ```julia
 f(x) = x^2
 integrator = IntegrateGLQ(f, 3)

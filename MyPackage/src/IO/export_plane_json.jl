@@ -60,14 +60,16 @@ end
 Builds spanwise interpolation closures for the upper and lower airfoil thickness contours at `n_chord + 1` chordwise stations ``x_i \\in [0, 1]``.
 
 # Arguments
-- `surface::Aerosurface`: The aerodynamic surface definition.
-- `n_chord::Int`: Number of chordwise discretization points.
+
+  - `surface::Aerosurface`: The aerodynamic surface definition.
+  - `n_chord::Int`: Number of chordwise discretization points.
 
 # Returns
-- `(xs, top_fn, bot_fn)`: Knot stations `xs`, upper contour interpolator `top_fn(k, y)`, and lower contour interpolator `bot_fn(k, y)`.
+
+  - `(xs, top_fn, bot_fn)`: Knot stations `xs`, upper contour interpolator `top_fn(k, y)`, and lower contour interpolator `bot_fn(k, y)`.
 """
 function build_thickness_splines(surface, n_chord::Int)
-    xs = collect(range(0.0, 1.0, length=n_chord + 1))
+    xs = collect(range(0.0, 1.0; length=n_chord + 1))
     ys_defined = surface.ys
     top_at_xi = Vector{Vector{Float64}}(undef, length(xs))
     bot_at_xi = Vector{Vector{Float64}}(undef, length(xs))
@@ -90,19 +92,18 @@ Airfoil profile contours run continuously from lower trailing edge to leading ed
 Enforces a minimum aerodynamic thickness fraction `min_thickness_rel` for zero-thickness flat-plate profiles to ensure watertight CAD lofting.
 
 # Arguments
-- `surface::Aerosurface`: Aerodynamic lifting surface.
-- `n_chord::Int`: Number of chordwise divisions (default: `50`).
-- `n_span::Int`: Number of spanwise divisions (default: `40`).
-- `min_thickness_rel::Float64`: Minimum relative thickness fraction (default: `0.002`).
+
+  - `surface::Aerosurface`: Aerodynamic lifting surface.
+  - `n_chord::Int`: Number of chordwise divisions (default: `50`).
+  - `n_span::Int`: Number of spanwise divisions (default: `40`).
+  - `min_thickness_rel::Float64`: Minimum relative thickness fraction (default: `0.002`).
 
 # Returns
-- `(stations, guides)`: Array of station curve dictionaries and guide curve coordinates.
+
+  - `(stations, guides)`: Array of station curve dictionaries and guide curve coordinates.
 """
 function generate_oml(
-    surface;
-    n_chord::Int=50,
-    n_span::Int=40,
-    min_thickness_rel::Float64=0.002,
+    surface; n_chord::Int=50, n_span::Int=40, min_thickness_rel::Float64=0.002
 )
     b = surface.b
     ys_defined = surface.ys
@@ -114,7 +115,9 @@ function generate_oml(
 
     xs, top_fn, bot_fn = build_thickness_splines(surface, n_chord)
     # Uniform spanwise distribution plus exact user-defined airfoil stations
-    y = sort(unique(vcat(collect(range(0.0, 1.0, length=n_span + 1)), ys_defined)))
+    y = sort(
+        unique(vcat(collect(range(0.0, 1.0; length=n_span + 1)), ys_defined))
+    )
 
     chords = chord_fn.(y)
     root_chord = chord_fn(0.0)
@@ -149,7 +152,9 @@ function generate_oml(
         end
 
         # Check maximum section thickness at this station
-        max_th = maximum([top_fn(k, yj) - bot_fn(k, yj) for k in 1:(n_chord + 1)])
+        max_th = maximum([
+            top_fn(k, yj) - bot_fn(k, yj) for k in 1:(n_chord + 1)
+        ])
         apply_min_thickness = max_th < min_thickness_rel
 
         # Evaluate upper and lower surface profiles
@@ -162,7 +167,8 @@ function generate_oml(
                 xi = xs[k]
                 camber_k = 0.5 * (t_raw + b_raw)
                 # Aerodynamic thickness envelope: zero gap at LE (xi=0), max thickness near mid-chord, thin finite TE (xi=1)
-                shape_factor = 2.0 * sqrt(clamp(xi, 0.0, 1.0)) * (1.0 - 0.9 * xi)
+                shape_factor =
+                    2.0 * sqrt(clamp(xi, 0.0, 1.0)) * (1.0 - 0.9 * xi)
                 t_eff = max(t_raw - b_raw, min_thickness_rel * shape_factor)
                 top_z[k] = (camber_k + 0.5 * t_eff) * c
                 bot_z[k] = (camber_k - 0.5 * t_eff) * c
@@ -198,7 +204,11 @@ function generate_oml(
         # TE guide: midpoint between top and bottom TE
         te_bot = pts_bot[1]
         te_top = pts_top[end]
-        te = [0.5 * (te_top[1] + te_bot[1]), 0.5 * (te_top[2] + te_bot[2]), 0.5 * (te_top[3] + te_bot[3])]
+        te = [
+            0.5 * (te_top[1] + te_bot[1]),
+            0.5 * (te_top[2] + te_bot[2]),
+            0.5 * (te_top[3] + te_bot[3]),
+        ]
 
         # Reference line guide at sw_center chord
         ref_x0 = sw_center * c
@@ -229,10 +239,7 @@ function mirror_points(pts::Vector, vertical::Bool)
 end
 
 function resolve_surface(
-    surface;
-    n_chord::Int=50,
-    n_span::Int=40,
-    min_thickness_rel::Float64=0.002,
+    surface; n_chord::Int=50, n_span::Int=40, min_thickness_rel::Float64=0.002
 )
     stations, guides = generate_oml(
         surface;
@@ -255,8 +262,10 @@ function resolve_surface(
                 "y_frac" => st["y_frac"],
                 "chord" => st["chord"],
                 "twist_deg" => st["twist_deg"],
-                "top_points" => mirror_points(st["top_points"], surface.vertical),
-                "bottom_points" => mirror_points(st["bottom_points"], surface.vertical),
+                "top_points" =>
+                    mirror_points(st["top_points"], surface.vertical),
+                "bottom_points" =>
+                    mirror_points(st["bottom_points"], surface.vertical),
                 "points" => mirror_points(st["points"], surface.vertical),
             ) for st in stations
         ]
@@ -278,16 +287,18 @@ Exports the outer-mold-line (OML) loft sections and guide curves of all surfaces
 The resulting JSON schema is structured for automated SolidWorks / CAD macro loft construction scripts.
 
 # Arguments
-- `plane::Plane`: The aircraft definition to export.
-- `filepath::String`: Output path for the `.json` file.
-- `n_chord::Int`: Number of chordwise discretization points per surface (default: `50`).
-- `n_span::Int`: Number of spanwise loft stations per surface (default: `40`).
-- `min_thickness_rel::Float64`: Minimum relative thickness fraction enforced for zero-thickness flat-plate airfoils (default: `0.002`).
+
+  - `plane::Plane`: The aircraft definition to export.
+  - `filepath::String`: Output path for the `.json` file.
+  - `n_chord::Int`: Number of chordwise discretization points per surface (default: `50`).
+  - `n_span::Int`: Number of spanwise loft stations per surface (default: `40`).
+  - `min_thickness_rel::Float64`: Minimum relative thickness fraction enforced for zero-thickness flat-plate airfoils (default: `0.002`).
 
 # Example
+
 ```julia
 using MyPackage.IO
-export_plane_json(my_plane, "plane_oml.json"; n_chord=50, n_span=40)
+export_plane_json(my_plane, \"plane_oml.json\"; n_chord=50, n_span=40)
 ```
 """
 function export_plane_json(

@@ -5,12 +5,14 @@
 Least-squares polynomial regression fit of degree `order` over 1D data points `(xs, fs)`.
 
 # Fields
-- `xs::Vector{<:AbstractFloat}`: Monotonically increasing knot coordinates.
-- `fs::Vector{<:AbstractFloat}`: Function values at knot coordinates.
-- `order::Int`: Polynomial degree.
-- `coeffs::Vector{<:AbstractFloat}`: Calculated polynomial coefficients in ascending order (constant term first).
+
+  - `xs::Vector{<:AbstractFloat}`: Monotonically increasing knot coordinates.
+  - `fs::Vector{<:AbstractFloat}`: Function values at knot coordinates.
+  - `order::Int`: Polynomial degree.
+  - `coeffs::Vector{<:AbstractFloat}`: Calculated polynomial coefficients in ascending order (constant term first).
 
 # Example
+
 ```julia
 xs = [0.0, 1.0, 2.0]
 fs = [1.0, 2.0, 0.0]

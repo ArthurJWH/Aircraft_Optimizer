@@ -6,13 +6,15 @@ Surface panel mesh representation for an individual aerodynamic surface in the a
 Stores the 3D vertex coordinates of the discretized camber surface and symmetry flags.
 
 # Fields
-- `vertices::Array{Float64, 3}`: 3D array of vertex coordinates with dimensions `(3, n_span + 1, n_chord + 1)`.
-    - Dimension 1: Cartesian components `(x, y, z)`, in `m`.
-  - Dimension 2: Spanwise index from root to tip.
-  - Dimension 3: Chordwise index from leading edge to trailing edge.
-- `mirror_xz::Bool`: Whether the mesh is mirrored across the XZ-plane (Y -> -Y).
+
+  - `vertices::Array{Float64, 3}`: 3D array of vertex coordinates with dimensions `(3, n_span + 1, n_chord + 1)`.
+      + Dimension 1: Cartesian components `(x, y, z)`, in `m`.
+      + Dimension 2: Spanwise index from root to tip.
+      + Dimension 3: Chordwise index from leading edge to trailing edge.
+  - `mirror_xz::Bool`: Whether the mesh is mirrored across the XZ-plane (Y -> -Y).
 
 # Constructors
+
 ```julia
 VLMMesh(plane::Plane, n_chordxspan::Vector{NTuple{2, Int}})
 VLMMesh(plane::Plane, n_chord::Int, n_span::Int)
@@ -20,6 +22,7 @@ VLMMesh(surface::Aerosurface, n_chord::Int, n_span::Int)
 ```
 
 # Example
+
 ```julia
 meshes = VLMMesh(plane, [(20, 30)])
 ```

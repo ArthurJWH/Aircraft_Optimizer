@@ -18,8 +18,20 @@ include("vlm_solver.jl")
 include("structVLMCoefs.jl")
 include("structVLMStab.jl")
 
-export VLMMesh, VLMLoad, VLMLoadPoint, VLMLoadSlice, VLMGeometry, VLMSetup,
-    VLMSolver!, VLMCoefficients, VLMCoefficientsSlice, VLMStabilityDerivatives,
-    VLMStabilityDerivativesFast, VortexRing, VLMSurface, GroundTransform, Vec3
+export VLMMesh,
+    VLMLoad,
+    VLMLoadPoint,
+    VLMLoadSlice,
+    VLMGeometry,
+    VLMSetup,
+    VLMSolver!,
+    VLMCoefficients,
+    VLMCoefficientsSlice,
+    VLMStabilityDerivatives,
+    VLMStabilityDerivativesFast,
+    VortexRing,
+    VLMSurface,
+    GroundTransform,
+    Vec3
 
 end

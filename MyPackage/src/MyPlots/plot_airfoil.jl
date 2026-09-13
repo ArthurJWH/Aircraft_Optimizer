@@ -8,16 +8,19 @@ using ..Geometry: Airfoil
 Plots the upper and lower surfaces of the given [`Airfoil`](@ref MyPackage.Geometry.Airfoil) alongside its mean camber line using `Plots.jl`.
 
 # Arguments
-- `airfoil::Airfoil`: The airfoil object to plot.
-- `save::Bool`: Whether to save the plot as a PNG image adjacent to the source `.dat` file (default: `false`).
+
+  - `airfoil::Airfoil`: The airfoil object to plot.
+  - `save::Bool`: Whether to save the plot as a PNG image adjacent to the source `.dat` file (default: `false`).
 
 # Returns
-- `p::Plots.Plot`: The generated plot object.
+
+  - `p::Plots.Plot`: The generated plot object.
 
 # Example
+
 ```julia
 using Plots
-airfoil = airfoil_from_dat("assets/airfoils/Plain/Plain.dat")
+airfoil = airfoil_from_dat(\"assets/airfoils/Plain/Plain.dat\")
 p = plot_airfoil(airfoil; save=false)
 display(p)
 ```

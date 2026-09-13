@@ -9,20 +9,22 @@
 Dimensional aerodynamic loads and moments for exactly one solved `(alpha, beta)` flow condition.
 
 Data is provided at three distinct levels of aggregation:
-- `*_total::Float64`: The whole-aircraft scalar value obtained by summing across all surfaces.
-- `*::Vector{Float64}`: Per-surface integrated totals of length `n_surfaces`.
-- `*_dist::Vector{Vector{Float64}}`: Per-surface spanwise sectional distributions. `*_dist[i]` is a vector across the spanwise panel stations of surface `i` (normalized per unit span segment).
+
+  - `*_total::Float64`: The whole-aircraft scalar value obtained by summing across all surfaces.
+  - `*::Vector{Float64}`: Per-surface integrated totals of length `n_surfaces`.
+  - `*_dist::Vector{Vector{Float64}}`: Per-surface spanwise sectional distributions. `*_dist[i]` is a vector across the spanwise panel stations of surface `i` (normalized per unit span segment).
 
 # Fields
-- `FX`, `FX_dist`, `FX_total`: Body-axis aerodynamic force in the X direction (aft positive), in `N`.
-- `FY`, `FY_dist`, `FY_total`: Body-axis aerodynamic side force in the Y direction (starboard positive), in `N`.
-- `FZ`, `FZ_dist`, `FZ_total`: Body-axis aerodynamic force in the Z direction (upward positive), in `N`.
-- `L`, `L_dist`, `L_total`: Wind-axis lift force perpendicular to the freestream direction, in `N`.
-- `D`, `D_dist`, `D_total`: Wind-axis near-field drag force parallel to the freestream direction, in `N`.
-- `M`, `M_dist`, `M_total`: Pitching moment about the aircraft center of gravity `CG` (pitch-up positive), in `N·m`.
-- `Ml`, `Ml_dist`, `Ml_total`: Rolling moment about `CG` (right wing down positive), in `N·m`.
-- `N`, `N_dist`, `N_total`: Yawing moment about `CG` (nose-right positive), in `N·m`.
-- `D_trefftz`, `D_trefftz_dist`, `D_trefftz_total`: Induced drag evaluated via far-field Trefftz plane integration, in `N`.
+
+  - `FX`, `FX_dist`, `FX_total`: Body-axis aerodynamic force in the X direction (aft positive), in `N`.
+  - `FY`, `FY_dist`, `FY_total`: Body-axis aerodynamic side force in the Y direction (starboard positive), in `N`.
+  - `FZ`, `FZ_dist`, `FZ_total`: Body-axis aerodynamic force in the Z direction (upward positive), in `N`.
+  - `L`, `L_dist`, `L_total`: Wind-axis lift force perpendicular to the freestream direction, in `N`.
+  - `D`, `D_dist`, `D_total`: Wind-axis near-field drag force parallel to the freestream direction, in `N`.
+  - `M`, `M_dist`, `M_total`: Pitching moment about the aircraft center of gravity `CG` (pitch-up positive), in `N·m`.
+  - `Ml`, `Ml_dist`, `Ml_total`: Rolling moment about `CG` (right wing down positive), in `N·m`.
+  - `N`, `N_dist`, `N_total`: Yawing moment about `CG` (nose-right positive), in `N·m`.
+  - `D_trefftz`, `D_trefftz_dist`, `D_trefftz_total`: Induced drag evaluated via far-field Trefftz plane integration, in `N`.
 """
 struct VLMLoadPoint
     FX::Vector{Float64}
@@ -60,7 +62,8 @@ end
 Sparse repository of solved `(alpha, beta)` conditions stored within a `VLMSetup`.
 
 # Fields
-- `points::Dict{Tuple{Float64, Float64}, VLMLoadPoint}`: Dictionary mapping each solved `(alpha, beta)` pair (in `deg`) to its corresponding [`VLMLoadPoint`](@ref).
+
+  - `points::Dict{Tuple{Float64, Float64}, VLMLoadPoint}`: Dictionary mapping each solved `(alpha, beta)` pair (in `deg`) to its corresponding [`VLMLoadPoint`](@ref).
 
 New conditions are inserted in ``O(1)`` time without reallocating existing solutions. Use [`VLMLoadSlice`](@ref) to extract ordered 1D polar curves for plotting.
 """
@@ -73,16 +76,29 @@ VLMLoad() = VLMLoad(Dict{Tuple{Float64, Float64}, VLMLoadPoint}())
 const _VLM_LOAD_FIELDS = (:FX, :FY, :FZ, :L, :D, :M, :Ml, :N, :D_trefftz)
 # Whole-aircraft scalars -- these collect into (n_points,) vectors.
 const _VLM_LOAD_TOTAL_FIELDS = (
-    :FX_total, :FY_total, :FZ_total, :L_total, :D_total, :M_total, :Ml_total,
-    :N_total, :D_trefftz_total,
+    :FX_total,
+    :FY_total,
+    :FZ_total,
+    :L_total,
+    :D_total,
+    :M_total,
+    :Ml_total,
+    :N_total,
+    :D_trefftz_total,
 )
 
 function _slice_matrices(matches)
     surf = NamedTuple{_VLM_LOAD_FIELDS}(
-        Tuple(reduce(hcat, getfield(pt, f) for (_, pt) in matches) for f in _VLM_LOAD_FIELDS)
+        Tuple(
+            reduce(hcat, getfield(pt, f) for (_, pt) in matches) for
+            f in _VLM_LOAD_FIELDS
+        ),
     )
     tot = NamedTuple{_VLM_LOAD_TOTAL_FIELDS}(
-        Tuple([getfield(pt, f) for (_, pt) in matches] for f in _VLM_LOAD_TOTAL_FIELDS)
+        Tuple(
+            [getfield(pt, f) for (_, pt) in matches] for
+            f in _VLM_LOAD_TOTAL_FIELDS
+        ),
     )
     return merge(surf, tot)
 end
@@ -93,20 +109,24 @@ end
 Extracts an ordered 1D polar slice from a [`VLMLoad`](@ref) storage container at a fixed `alpha` or `beta`.
 
 Exactly one of `alpha` or `beta` must be provided as a keyword argument:
-- `beta = b`: Returns points sorted by ascending angle of attack `alpha`.
-- `alpha = a`: Returns points sorted by ascending sideslip angle `beta`.
+
+  - `beta = b`: Returns points sorted by ascending angle of attack `alpha`.
+  - `alpha = a`: Returns points sorted by ascending sideslip angle `beta`.
 
 # Returns
+
 A `NamedTuple` containing:
-- Coordinate vector (`alpha` or `beta`).
-- Whole-aircraft loads as vectors: `L_total`, `D_total`, `M_total`, `Ml_total`, `N_total`, `FX_total`, `FY_total`, `FZ_total`, `D_trefftz_total`.
-- Per-surface loads as `(n_surfaces, n_points)` matrices: `L`, `D`, `M`, `Ml`, `N`, `FX`, `FY`, `FZ`, `D_trefftz`.
+
+  - Coordinate vector (`alpha` or `beta`).
+  - Whole-aircraft loads as vectors: `L_total`, `D_total`, `M_total`, `Ml_total`, `N_total`, `FX_total`, `FY_total`, `FZ_total`, `D_trefftz_total`.
+  - Per-surface loads as `(n_surfaces, n_points)` matrices: `L`, `D`, `M`, `Ml`, `N`, `FX`, `FY`, `FZ`, `D_trefftz`.
 
 # Example
+
 ```julia
 # Extract an alpha polar at beta = 0.0 deg
-polar = VLMLoadSlice(setup.loads; beta = 0.0)
-plot(polar.alpha, polar.L_total, xlabel="alpha (deg)", ylabel="Lift (N)")
+polar = VLMLoadSlice(setup.loads; beta=0.0)
+plot(polar.alpha, polar.L_total; xlabel=\"alpha (deg)\", ylabel=\"Lift (N)\")
 ```
 """
 function VLMLoadSlice(
@@ -118,13 +138,18 @@ function VLMLoadSlice(
         throw(ArgumentError("give exactly one of alpha or beta"))
 
     if beta !== nothing
-        matches = sort([(a, pt) for ((a, b), pt) in loads.points if b == beta]; by=first)
-        isempty(matches) && throw(ArgumentError("no stored points at beta = $beta"))
+        matches = sort(
+            [(a, pt) for ((a, b), pt) in loads.points if b == beta]; by=first
+        )
+        isempty(matches) &&
+            throw(ArgumentError("no stored points at beta = $beta"))
         return merge((alpha=first.(matches),), _slice_matrices(matches))
     else
-        matches = sort([(b, pt) for ((a, b), pt) in loads.points if a == alpha]; by=first)
-        isempty(matches) && throw(ArgumentError("no stored points at alpha = $alpha"))
+        matches = sort(
+            [(b, pt) for ((a, b), pt) in loads.points if a == alpha]; by=first
+        )
+        isempty(matches) &&
+            throw(ArgumentError("no stored points at alpha = $alpha"))
         return merge((beta=first.(matches),), _slice_matrices(matches))
     end
 end
-

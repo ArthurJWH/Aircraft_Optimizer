@@ -9,13 +9,16 @@ using ..Geometry
 Generates an interactive 3D visualization of one or more VLM surface meshes using Makie.
 
 # Arguments
-- `mesh` or `meshes`: A [`MyPackage.VLM.VLMMesh`](@ref) or vector of meshes (e.g. `geom.meshes`).
-- `min_extent::Float64`: Minimum spatial axis span in each coordinate direction in `m` (default: `5.0`).
+
+  - `mesh` or `meshes`: A [`MyPackage.VLM.VLMMesh`](@ref) or vector of meshes (e.g. `geom.meshes`).
+  - `min_extent::Float64`: Minimum spatial axis span in each coordinate direction in `m` (default: `5.0`).
 
 # Returns
-- `fig::Makie.Figure`: The Makie figure containing the rendered 3D surface and wireframe.
+
+  - `fig::Makie.Figure`: The Makie figure containing the rendered 3D surface and wireframe.
 
 # Example
+
 ```julia
 using GLMakie
 GLMakie.activate!()

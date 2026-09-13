@@ -14,16 +14,19 @@ abstract type AbstractSpline end
 Piecewise linear spline interpolation over a sequence of 1D coordinates.
 
 A relative-coordinate formulation is evaluated: for ``x \\in [x_i, x_{i+1}]``,
+
 ```math
 \\text{spl}_i(x) = c_{2i-1} + c_{2i} (x - x_i)
 ```
 
 # Fields
-- `xs::Vector{Float64}`: Monotonically increasing knot coordinates.
-- `fs::Vector{Float64}`: Function values at knot coordinates.
-- `coeffs::Vector{Float64}`: Segment interpolation coefficients.
+
+  - `xs::Vector{Float64}`: Monotonically increasing knot coordinates.
+  - `fs::Vector{Float64}`: Function values at knot coordinates.
+  - `coeffs::Vector{Float64}`: Segment interpolation coefficients.
 
 # Example
+
 ```julia
 xs = [0.0, 1.0, 2.0]
 fs = [1.0, 2.0, 0.0]
@@ -43,17 +46,20 @@ end
 Piecewise quadratic spline interpolation with configurable boundary conditions.
 
 A relative-coordinate formulation is evaluated: for ``x \\in [x_i, x_{i+1}]``,
+
 ```math
 \\text{spl}_i(x) = c_{3i-2} + c_{3i-1} (x - x_i) + c_{3i} (x - x_i)^2
 ```
 
 # Fields
-- `xs::Vector{Float64}`: Monotonically increasing knot coordinates.
-- `fs::Vector{Float64}`: Function values at knot coordinates.
-- `coeffs::Vector{Float64}`: Segment quadratic coefficients.
-- `bc::AbstractBC`: Boundary condition applied to close the spline system.
+
+  - `xs::Vector{Float64}`: Monotonically increasing knot coordinates.
+  - `fs::Vector{Float64}`: Function values at knot coordinates.
+  - `coeffs::Vector{Float64}`: Segment quadratic coefficients.
+  - `bc::AbstractBC`: Boundary condition applied to close the spline system.
 
 # Example
+
 ```julia
 xs = [0.0, 1.0, 2.0]
 fs = [1.0, 2.0, 0.0]
@@ -75,18 +81,21 @@ end
 Piecewise cubic spline interpolation with two independent boundary conditions.
 
 A relative-coordinate formulation is evaluated: for ``x \\in [x_i, x_{i+1}]``,
+
 ```math
 \\text{spl}_i(x) = c_{4i-3} + c_{4i-2} (x - x_i) + c_{4i-1} (x - x_i)^2 + c_{4i} (x - x_i)^3
 ```
 
 # Fields
-- `xs::Vector{Float64}`: Monotonically increasing knot coordinates.
-- `fs::Vector{Float64}`: Function values at knot coordinates.
-- `coeffs::Vector{Float64}`: Segment cubic coefficients.
-- `bc1::AbstractBC`: First boundary condition applied to the spline.
-- `bc2::AbstractBC`: Second boundary condition applied to the spline.
+
+  - `xs::Vector{Float64}`: Monotonically increasing knot coordinates.
+  - `fs::Vector{Float64}`: Function values at knot coordinates.
+  - `coeffs::Vector{Float64}`: Segment cubic coefficients.
+  - `bc1::AbstractBC`: First boundary condition applied to the spline.
+  - `bc2::AbstractBC`: Second boundary condition applied to the spline.
 
 # Example
+
 ```julia
 xs = [0.0, 1.0, 2.0]
 fs = [1.0, 2.0, 0.0]
@@ -425,11 +434,13 @@ end
 Create a [`LinearSpline`](@ref) from knot coordinates `xs` and precomputed linear coefficients.
 
 The polynomial on segment ``i`` is:
+
 ```math
 f(x) = c_{2i-1} + c_{2i} (x - x_i)
 ```
 
 # Example
+
 ```julia
 xs = [0.0, 1.0, 2.0]
 coeffs = [1.0, 1.0, 2.0, -2.0]  # Coefficients for two segments
@@ -448,11 +459,13 @@ end
 Create a [`QuadraticSpline`](@ref) from knot coordinates `xs` and precomputed quadratic coefficients.
 
 The polynomial on segment ``i`` is:
+
 ```math
 f(x) = c_{3i-2} + c_{3i-1} (x - x_i) + c_{3i} (x - x_i)^2
 ```
 
 # Example
+
 ```julia
 xs = [0.0, 1.0, 2.0]
 coeffs = [1.0, 1.0, 0.5, 2.0, -2.0, 1.0]  # Coefficients for two segments
@@ -471,11 +484,13 @@ end
 Create a [`CubicSpline`](@ref) from knot coordinates `xs` and precomputed cubic coefficients.
 
 The polynomial on segment ``i`` is:
+
 ```math
 f(x) = c_{4i-3} + c_{4i-2} (x - x_i) + c_{4i-1} (x - x_i)^2 + c_{4i} (x - x_i)^3
 ```
 
 # Example
+
 ```julia
 xs = [0.0, 1.0, 2.0]
 coeffs = [1.0, 1.0, 0.5, 2.0, -2.0, 1.0, 0.5, -1.0]  # Coefficients for two segments

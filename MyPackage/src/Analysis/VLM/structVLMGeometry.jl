@@ -13,21 +13,24 @@ Decoupled from flow conditions (`V_inf`, `rho`, `ground`), allowing a single `VL
 multiple [`VLMSetup`](@ref) configurations without re-meshing.
 
 # Fields
-- `meshes::Vector{VLMMesh}`: Per-surface panel meshes containing vertex coordinates.
-- `rings::Vector{VortexRing}`: Global flattened vector of all discrete quadrilateral vortex rings.
-- `n_panels::Int`: Total number of vortex panels across all surfaces.
-- `n_surfaces::Int`: Number of lifting surfaces in the plane.
-- `surfaces::Vector{VLMSurface}`: Metadata and index ranges for each surface.
-- `wake_map::Vector{Int}`: Global indices of trailing-edge panels shedding wake vortex filaments.
-- `CG::Vec3`: Center of gravity coordinates `(x, y, z)` in `m` about which moments are evaluated.
-- `Sref::Float64`: Reference planform area in m² (inherited from primary wing `plane.surfaces[1].S`).
-- `cref::Float64`: Reference chord (MAC) in `m` (inherited from primary wing `plane.surfaces[1].MAC`).
-- `bref::Float64`: Reference wingspan in `m` (inherited from primary wing `plane.surfaces[1].b`).
+
+  - `meshes::Vector{VLMMesh}`: Per-surface panel meshes containing vertex coordinates.
+  - `rings::Vector{VortexRing}`: Global flattened vector of all discrete quadrilateral vortex rings.
+  - `n_panels::Int`: Total number of vortex panels across all surfaces.
+  - `n_surfaces::Int`: Number of lifting surfaces in the plane.
+  - `surfaces::Vector{VLMSurface}`: Metadata and index ranges for each surface.
+  - `wake_map::Vector{Int}`: Global indices of trailing-edge panels shedding wake vortex filaments.
+  - `CG::Vec3`: Center of gravity coordinates `(x, y, z)` in `m` about which moments are evaluated.
+  - `Sref::Float64`: Reference planform area in m² (inherited from primary wing `plane.surfaces[1].S`).
+  - `cref::Float64`: Reference chord (MAC) in `m` (inherited from primary wing `plane.surfaces[1].MAC`).
+  - `bref::Float64`: Reference wingspan in `m` (inherited from primary wing `plane.surfaces[1].b`).
 
 # Constructors
+
 ```julia
 VLMGeometry(plane::Plane, n_chordxspan::Vector{NTuple{2, Int}})
 ```
+
 `n_chordxspan` specifies `(n_chord, n_span)` panel counts for each surface of the plane.
 """
 struct VLMGeometry
@@ -52,7 +55,18 @@ function VLMGeometry(
     Sref = plane.surfaces[1].S
     cref = plane.surfaces[1].MAC
     bref = plane.surfaces[1].b
-    return VLMGeometry(meshes, rings, n_panels, n_surfaces, surfaces, wake_map, CG, Sref, cref, bref)
+    return VLMGeometry(
+        meshes,
+        rings,
+        n_panels,
+        n_surfaces,
+        surfaces,
+        wake_map,
+        CG,
+        Sref,
+        cref,
+        bref,
+    )
 end
 
 function _gen_vortex_geom(meshes::AbstractVector{<:VLMMesh})
@@ -223,4 +237,3 @@ end
     area = 0.5 * normal
     return n, area
 end
-
