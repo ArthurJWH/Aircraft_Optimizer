@@ -8,7 +8,7 @@
 
 **Step 3:** Download [Julia](https://julialang.org/downloads/manual-downloads/) ("Long-term Support Release" recommended): a Just-in-time (JIT) compilation programming language with syntax similar to Python and Matlab.
 
-!!! warning "Recall"
+!!! warning "Add Julia to PATH"
     During installation, in "Select Additional Tasks", check "Add Julia to PATH".
 
 **Step 4:** Open Visual Studio Code, go to Terminal > New Terminal, and run the following lines:
@@ -19,16 +19,16 @@ $ git config --global user.email somebody@mail.com
 ```
 
 **Step 5:** Open EXTENSIONS tab and install:
-    - Julia (identifier: julialang.language-julia)
-    - GitHub Repository Manager (identifier: henriquebruno.github-repository-manager)
+- Julia (identifier: julialang.language-julia)
+- GitHub Repository Manager (identifier: henriquebruno.github-repository-manager)
 
 **Step 6:** Open GitHub Repository Manager tab:
-    - Log in into your GitHub account.
-    - Click on Aircraft Optimizer repository and select a folder to clone the source code (recommended: "C:\").
+- Log in into your GitHub account.
+- Click on Aircraft Optimizer repository and select a folder to clone the source code (recommended: "C:\").
 
 **Step 7:** Go to File > Open Folder..., and select the cloned folder.
 
 **Step 8:** Open Setup.jl and run it once by pressing Alt+Enter.
 
-!!! note "Note"
+!!! note "Starting a session"
     At the start of each session, it might be required to run Startup.jl
