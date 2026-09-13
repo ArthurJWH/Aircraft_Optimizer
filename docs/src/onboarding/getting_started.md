@@ -19,10 +19,12 @@ $ git config --global user.email somebody@mail.com
 ```
 
 **Step 5:** Open EXTENSIONS tab and install:
+
 - Julia (identifier: julialang.language-julia)
 - GitHub Repository Manager (identifier: henriquebruno.github-repository-manager)
 
 **Step 6:** Open GitHub Repository Manager tab:
+
 - Log in into your GitHub account.
 - Click on Aircraft Optimizer repository and select a folder to clone the source code (recommended: "C:\").
 
