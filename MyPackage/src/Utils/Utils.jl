@@ -5,6 +5,7 @@ include("structSpline.jl")
 include("structLSR.jl")
 include("structInterpolate.jl")
 include("structIntegrate.jl")
+include("bisection.jl")
 
 export AbstractBC,
     FirstDerivativeBC, SecondDerivativeBC, ThirdDerivativeBC, NaturalBC
@@ -18,5 +19,6 @@ export AbstractSpline,
 export LSR
 export Interpolate
 export IntegrateGLQ
+export bisection
 
 end

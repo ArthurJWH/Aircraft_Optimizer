@@ -79,14 +79,15 @@ wing = Aerosurface(
 Combine all surfaces into a [`Plane`](@ref):
 
 ```julia
-plane = Plane([wing])                              # single surface
-# plane = Plane([wing, htail])                     # multi-surface
-# plane = Plane([wing, htail]; CG=(0.5, 0.0, 0.0))  # explicit CG
+plane = Plane([wing])                             # single surface (CG computed automatically)
+# plane = Plane([wing, htail])                    # multi-surface
+# plane = Plane([wing, htail], (0.5, 0.0, 0.0))   # explicit CG (x, y, z) in meters
 ```
 
 !!! tip "Default center of gravity"
-    If `CG` is not specified, it defaults to the quarter-chord of the primary wing's
-    mean aerodynamic chord: `(pos[1] + 0.25 x MAC, pos[2], pos[3])`.
+    When `CG` is omitted, it is computed automatically at the aerodynamic center (quarter-chord of the MAC)
+    of the primary surface (`surfaces[1]`), accounting for sweep offset and the spanwise location of the MAC
+    ($y_\text{MAC}$ solved via bisection).
 
 ---
 
@@ -178,14 +179,14 @@ supplied vectors.
 
 ### Dimensional Loads
 
-Extract a sorted 1D polar slice with [`VLMLoadSlice`](@ref):
+Extract a sorted 1D load slice with [`VLMLoadSlice`](@ref):
 
 ```julia
 using Plots
 
-polar = VLMLoadSlice(setup.loads; beta=0.0)
+load_slice = VLMLoadSlice(setup.loads; beta=0.0)
 
-Plots.plot(polar.alpha, polar.L_total,
+Plots.plot(load_slice.alpha, load_slice.L_total,
     xlabel = "Angle of Attack α [deg]",
     ylabel = "Lift [N]",
     label  = "Total Lift",

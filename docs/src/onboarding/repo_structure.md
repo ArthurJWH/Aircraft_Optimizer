@@ -53,7 +53,7 @@ The package is organized into focused submodules under `MyPackage/src/`:
 - **`IO/`** (`MyPackage.IO`):
   - File reading ([`read_dat`](@ref MyPackage.IO.read_dat), [`airfoil_from_dat`](@ref MyPackage.IO.airfoil_from_dat)) and 3D outer-mold-line CAD JSON export ([`export_plane_json`](@ref MyPackage.IO.export_plane_json)).
 - **`Utils/`** (`MyPackage.Utils`):
-  - Numerical quadrature ([`IntegrateGLQ`](@ref MyPackage.Utils.IntegrateGLQ)), piecewise splines ([`LinearSpline`](@ref MyPackage.Utils.LinearSpline), [`QuadraticSpline`](@ref MyPackage.Utils.QuadraticSpline), [`CubicSpline`](@ref MyPackage.Utils.CubicSpline)), and regression ([`LSR`](@ref MyPackage.Utils.LSR)).
+  - Numerical quadrature ([`IntegrateGLQ`](@ref MyPackage.Utils.IntegrateGLQ)), root finding ([`bisection`](@ref MyPackage.Utils.bisection)), piecewise splines ([`LinearSpline`](@ref MyPackage.Utils.LinearSpline), [`QuadraticSpline`](@ref MyPackage.Utils.QuadraticSpline), [`CubicSpline`](@ref MyPackage.Utils.CubicSpline)), and regression ([`LSR`](@ref MyPackage.Utils.LSR)).
 - **`Info/`** (`MyPackage.PlaneInfo`):
   - Aircraft performance metadata and center-of-gravity containers ([`Data`](@ref MyPackage.PlaneInfo.Data), [`Coeffs`](@ref MyPackage.PlaneInfo.Coeffs)).
 - **`MyPlots/`** (`MyPackage.MyPlots`):

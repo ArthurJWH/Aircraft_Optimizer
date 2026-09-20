@@ -9,7 +9,7 @@ The package is partitioned into focused, composable submodules:
 | [`MyPackage.Geometry`](#Geometry) | Aircraft representation, parametric lifting surfaces, and 2D airfoil profiles. |
 | [`MyPackage.VLM`](#VLM-Solver-&-Aerodynamics) | Vortex Lattice Method mesher, AIC solver, forces, moments, polars, and stability derivatives. |
 | [`MyPackage.IO`](#Input-/-Output) | File parsers (`.dat` airfoils) and CAD outer-mold-line (OML) JSON exporters. |
-| [`MyPackage.Utils`](#Numerical-Utilities) | Gauss-Legendre quadrature, spline interpolation, and least-squares regression. |
+| [`MyPackage.Utils`](#Numerical-Utilities) | Gauss-Legendre quadrature, root-finding bisection, spline interpolation, and least-squares regression. |
 | [`MyPackage.PlaneInfo`](#Aircraft-Information-&-State) | Lightweight data and performance containers. |
 | [`MyPackage.MyPlots`](#Visualization) | 3D mesh rendering (`Makie.jl`) and 2D airfoil plotting (`Plots.jl`). |
 
