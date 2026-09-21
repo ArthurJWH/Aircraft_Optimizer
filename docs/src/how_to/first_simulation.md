@@ -221,18 +221,18 @@ For coefficient curves across an angle-of-attack or sideslip sweep, use
 [`VLMCoefficientsSlice`](@ref):
 
 ```julia
-coefs = VLMCoefficientsSlice(setup; beta=0.0)
+polar = VLMCoefficientsSlice(setup; beta=0.0)
 
 # Lift curve
-Plots.plot(coefs.alpha, coefs.CL_total,
+Plots.plot(polar.alpha, polar.CL_total,
     xlabel = "α [deg]", ylabel = "CL", label = "CL", lw = 2,
 )
 
 # Drag polar
-Plots.plot(coefs.CD_total, coefs.CL_total,
+Plots.plot(polar.CD_total, polar.CL_total,
     xlabel = "CD", ylabel = "CL", label = "Near-field", lw = 2,
 )
-Plots.plot!(coefs.CD_trefftz_total, coefs.CL_total,
+Plots.plot!(polar.CD_trefftz_total, polar.CL_total,
     label = "Trefftz Induced Drag", ls = :dash,
 )
 ```
